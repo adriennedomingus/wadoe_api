@@ -1,0 +1,26 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Washington State Department of Education API",
+        "description": "Endpoints for student demographics by district in Washington State",
+        "version": "1.0.0"
+    },
+    "host": "http://wadoe-api.herokuapp.com/",
+    "basePath": "api/v1",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/districts": {
+            "get": {
+                "summary": "All districts",
+                "description": "This endpoint returns all school districts and includes its name, slug(used for querying about an individual district) and number, as well as the name and",
+                "responses": {
+                    "200": {
+                        "description": "An array of districts"
+                    }
+                }
+            }
+        }
+    }
+}
