@@ -20,7 +20,56 @@
                 "description": "This endpoint returns all school districts and includes its name, slug(used for querying about an individual district) and number, as well as the name and",
                 "responses": {
                     "200": {
-                        "description": "An array of districts"
+                        "description": "successful response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/District"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "District": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the district"
+                },
+                "slug": {
+                    "type": "string",
+                    "description": "Parameterized name of the school district. To be used for any calls requesting data for a specific district"
+                },
+                "educational_service_district": {
+                    "type": "object",
+                    "description": "Details about the ESD to which the district belongs",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the ESD"
+                        },
+                        "slug": {
+                            "type": "string",
+                            "description": "Parameterized name of the ESD. To be used for any calls requesting data for a specific Educational Service District"
+                        }
+                    }
+                },
+                "county": {
+                    "type": "object",
+                    "description": "Details about the county in which the district is located",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the county"
+                        },
+                        "slug": {
+                            "type": "string",
+                            "description": "Parameterized name of the county. To be used for any calls requesting data for a specific County"
+                        }
                     }
                 }
             }
