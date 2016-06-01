@@ -9,6 +9,7 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem "active_model_serializers", github: "rails-api/active_model_serializers"
+gem 'responders', '~> 2.0'
 
 group :development, :test do
   gem 'byebug'
