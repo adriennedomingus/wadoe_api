@@ -5,8 +5,11 @@
         "description": "Endpoints for student demographics by district in Washington State",
         "version": "1.0.0"
     },
-    "host": "http://wadoe-api.herokuapp.com/",
-    "basePath": "api/v1",
+    "host": "wadoe-api.herokuapp.com",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/api/v1",
     "produces": [
         "application/json"
     ],
