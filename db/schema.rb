@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601001054) do
+ActiveRecord::Schema.define(version: 20160601143252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20160601001054) do
     t.string   "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "slug"
   end
 
   create_table "districts", force: :cascade do |t|
@@ -30,6 +31,7 @@ ActiveRecord::Schema.define(version: 20160601001054) do
     t.integer  "county_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.string   "slug"
   end
 
   add_index "districts", ["county_id"], name: "index_districts_on_county_id", using: :btree
@@ -39,6 +41,7 @@ ActiveRecord::Schema.define(version: 20160601001054) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "slug"
   end
 
   create_table "exceptional_student_services", force: :cascade do |t|
