@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601143252) do
+ActiveRecord::Schema.define(version: 20160601165102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,22 +71,22 @@ ActiveRecord::Schema.define(version: 20160601143252) do
   create_table "other_demographics", force: :cascade do |t|
     t.float    "percent_migrant"
     t.integer  "number_migrant"
-    t.float    "percent_transitional"
-    t.integer  "number_transitional"
+    t.float    "percent_transitional_bilingual"
+    t.integer  "number_transitional_bilingual"
     t.float    "percent_frl"
     t.integer  "number_frl"
     t.float    "percent_foster_care"
     t.integer  "number_foster_care"
     t.integer  "student_enrollment_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   add_index "other_demographics", ["student_enrollment_id"], name: "index_other_demographics_on_student_enrollment_id", using: :btree
 
   create_table "race_ethnicities", force: :cascade do |t|
-    t.float    "percent_american_indian"
-    t.integer  "number_american_indian"
+    t.float    "percent_american_indian_or_alaskan_native"
+    t.integer  "number_american_indian_or_alaskan_native"
     t.float    "percent_asian"
     t.integer  "number_asian"
     t.float    "percent_pacific_islander"
@@ -102,8 +102,8 @@ ActiveRecord::Schema.define(version: 20160601143252) do
     t.float    "percent_two_or_more"
     t.integer  "number_two_or_more"
     t.integer  "student_enrollment_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   add_index "race_ethnicities", ["student_enrollment_id"], name: "index_race_ethnicities_on_student_enrollment_id", using: :btree
@@ -117,10 +117,10 @@ ActiveRecord::Schema.define(version: 20160601143252) do
   create_table "student_enrollments", force: :cascade do |t|
     t.integer  "school_year_id"
     t.integer  "total"
-    t.integer  "students_per_classroom"
+    t.integer  "students_per_classroom_teacher"
     t.integer  "district_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   add_index "student_enrollments", ["district_id"], name: "index_student_enrollments_on_district_id", using: :btree
