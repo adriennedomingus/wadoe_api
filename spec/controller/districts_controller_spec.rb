@@ -12,24 +12,30 @@ RSpec.describe Api::V1::DistrictsController, type: :controller do
 
       districts = JSON.parse(response.body)
 
-      result = { "districts" =>
-                  [{ "name" => d1.name,
+      result = [ { "name" => d1.name,
                     "slug" => d1.slug,
                     "number" => d1.number,
-                    "educational_service_district" => esd.name,
-                    "educational_service_district_slug" => esd.slug,
-                    "county" => c.name,
-                    "county_slug" => c.slug
+                    "educational_service_district" => {
+                      "name" => esd.name,
+                      "slug" => esd.slug,
+                    },
+                    "county" => {
+                      "name" => c.name,
+                      "slug" => c.slug
+                    }
                   },
                   { "name" => d2.name,
                     "slug" => d2.slug,
                     "number" => d2.number,
-                    "educational_service_district" => esd.name,
-                    "educational_service_district_slug" => esd.slug,
-                    "county" => c.name,
-                    "county_slug" => c.slug
+                    "educational_service_district" => {
+                      "name" => esd.name,
+                      "slug" => esd.slug,
+                    },
+                    "county" => {
+                      "name" => c.name,
+                      "slug" => c.slug
+                    }
                   }]
-               }
 
       expect(districts).to eq(result)
     end
