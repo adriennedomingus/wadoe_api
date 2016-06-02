@@ -30,6 +30,55 @@
                     }
                 }
             }
+        },
+        "/demographics/districts": {
+            "get": {
+                "summary": "Student demographics for district and year",
+                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified school district for the specified school year. School district name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17'",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "query",
+                        "description": "slug of school district name",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "year",
+                        "in": "query",
+                        "description": "slug of school district name",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful response",
+                        "schema": {
+                            "$ref": "#/definitions/DistrictDemographics"
+                        }
+                    },
+                    "400": {
+                        "description": "Data does not exist for the specified combination of school district and school year",
+                        "schema": {
+                            "type": "object",
+                            "description": "contains error message and status code",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "specific error"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "400 status code"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -69,6 +118,189 @@
                         "slug": {
                             "type": "string",
                             "description": "Parameterized name of the county. To be used for any calls requesting data for a specific County"
+                        }
+                    }
+                }
+            }
+        },
+        "DistrictDemographics": {
+            "type": "object",
+            "properties": {
+                "total": {
+                    "type": "integer",
+                    "description": "Total number of students enrolled in the district"
+                },
+                "students_per_classroom_teacher": {
+                    "type": "integer",
+                    "description": "Average number of students per classroom teacher"
+                },
+                "district": {
+                    "type": "object",
+                    "description": "details about the specific district requested",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the school district"
+                        },
+                        "slug": {
+                            "type": "string",
+                            "description": "Parameterized name of the school district"
+                        },
+                        "number": {
+                            "type": "string",
+                            "description": "Number used to identify school district"
+                        }
+                    }
+                },
+                "gender": {
+                    "type": "object",
+                    "description": "Detailed gender demographics",
+                    "properties": {
+                        "percent_male": {
+                            "type": "integer",
+                            "description": "Percent of students who are male"
+                        },
+                        "number_male": {
+                            "type": "integer",
+                            "description": "Nubmer of students who are male"
+                        },
+                        "percent_female": {
+                            "type": "integer",
+                            "description": "Percent of students who are female"
+                        },
+                        "number_female": {
+                            "type": "integer",
+                            "description": "Number of students who are female"
+                        }
+                    }
+                },
+                "exceptional_student_service": {
+                    "type": "object",
+                    "description": "Detailed statistics for students who receive exceptional student services",
+                    "properties": {
+                        "percent_special_education": {
+                            "type": "integer",
+                            "description": "Percent of students who receive special education services"
+                        },
+                        "nubmer_special_education": {
+                            "type": "integer",
+                            "description": "Number of students who receive special education services"
+                        },
+                        "percent_504": {
+                            "type": "integer",
+                            "description": "Percent of students who receive services from a Section 504 plan"
+                        },
+                        "number_504": {
+                            "type": "integer",
+                            "description": "Number of students who receive services from a Section 504 plan"
+                        }
+                    }
+                },
+                "race_ethnicity": {
+                    "type": "object",
+                    "description": "Detailed statistics on race and ethnicity of students as identified by parents",
+                    "properties": {
+                        "percent_american_indian_or_alaskan_native": {
+                            "type": "integer",
+                            "description": "Percent of students identified as American Indian or Alaskan Native"
+                        },
+                        "number_american_indian_or_alaskan_native": {
+                            "type": "integer",
+                            "description": "Number of students identified as American Indian or Alaskan Native"
+                        },
+                        "percent_asian": {
+                            "type": "integer",
+                            "description": "Percent of students identified as Asian"
+                        },
+                        "number_asian": {
+                            "type": "integer",
+                            "description": "Number of students identified as Asian"
+                        },
+                        "percent_pacific_islander": {
+                            "type": "integer",
+                            "description": "Percent of students identified as Pacific Islander"
+                        },
+                        "number_pacific_islander": {
+                            "type": "integer",
+                            "description": "Number of students identified as Pacific Islander"
+                        },
+                        "percent_asian_pacific_islander": {
+                            "type": "integer",
+                            "description": "Percent of students identified as Asian Pacific Islander"
+                        },
+                        "number_asian_pacific_islander": {
+                            "type": "integer",
+                            "description": "Number of students identified as Asian Pacific Islander"
+                        },
+                        "percent_black": {
+                            "type": "integer",
+                            "description": "Percent of students identified as Black"
+                        },
+                        "number_black": {
+                            "type": "integer",
+                            "description": "Number of students identified as Black"
+                        },
+                        "percent_hispanic": {
+                            "type": "integer",
+                            "description": "Percent of students identified as Hispanic"
+                        },
+                        "number_hispanic": {
+                            "type": "integer",
+                            "description": "Number of students identified as Hispanic"
+                        },
+                        "percent_white": {
+                            "type": "integer",
+                            "description": "Percent of students identified as White"
+                        },
+                        "number_white": {
+                            "type": "integer",
+                            "description": "Number of students identified as White"
+                        },
+                        "percent_two_or_more": {
+                            "type": "integer",
+                            "description": "Percent of students identified as two or more races"
+                        },
+                        "number_two_or_more": {
+                            "type": "integer",
+                            "description": "Number of students identified as two or more races"
+                        }
+                    }
+                },
+                "other_demographic": {
+                    "type": "object",
+                    "description": "other demographic indicators",
+                    "properties": {
+                        "percent_migrant": {
+                            "type": "integer",
+                            "description": "Percent of students identified as migrant"
+                        },
+                        "nubmer_migrant": {
+                            "type": "integer",
+                            "description": "Number of students identified as migrant"
+                        },
+                        "percent_transitional_bilingual": {
+                            "type": "integer",
+                            "description": "Percent of students identified as transitional bilingual"
+                        },
+                        "nubmer_transitional_bilingual": {
+                            "type": "integer",
+                            "description": "Number of students identified as transitional bilingual"
+                        },
+                        "percent_frl": {
+                            "type": "integer",
+                            "description": "Percent of students who receive Free or Reduced Price Meals"
+                        },
+                        "nubmer_frl": {
+                            "type": "integer",
+                            "description": "Number of students who receive Free or Reduced Price Meals"
+                        },
+                        "percent_foster_care": {
+                            "type": "integer",
+                            "description": "Percent of students currently living in foster care"
+                        },
+                        "nubmer_foster_care": {
+                            "type": "integer",
+                            "description": "Number of students currently living in foster care"
                         }
                     }
                 }
