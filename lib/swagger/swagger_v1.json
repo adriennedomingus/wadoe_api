@@ -47,7 +47,7 @@
                     {
                         "name": "year",
                         "in": "query",
-                        "description": "slug of school district name",
+                        "description": "school year for which data is being requested",
                         "required": true,
                         "type": "string",
                         "format": "uuid"
