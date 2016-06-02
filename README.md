@@ -7,6 +7,8 @@ This was built as an independent study project during module 4 at the Turing Sch
 ##### Current Endpoints
 
 * Districts: returns a list of all districts and their county and ESD
+* Demographics:
+  * District: returns student demographics in specified school district & specified school year
 
 ### Production
 
