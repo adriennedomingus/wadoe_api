@@ -20,10 +20,6 @@ default: &default
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
-  database: postgres
-  username: postgres
-  password:
-  host: db
 
 development:
   <<: *default
@@ -85,3 +81,5 @@ test:
 production:
   <<: *default
   database: wadoe_api_production
+  username: wadoe_api
+  password: <%= ENV['WADOE_API_DATABASE_PASSWORD'] %>
