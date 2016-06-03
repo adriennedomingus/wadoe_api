@@ -18,6 +18,16 @@
             "get": {
                 "summary": "List of all districts",
                 "description": "This endpoint returns all school districts and includes its name, slug(used for querying about an individual district) and number, as well as the name and",
+                "parameters": [
+                    {
+                        "name": "api_key",
+                        "in": "query",
+                        "description": "your individual api key",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
                 "tags": [
                     "Districts"
                 ],
@@ -28,6 +38,23 @@
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/District"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "description": "contains error message and status code",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "unauthorized error"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "401 status code"
+                                }
                             }
                         }
                     }
@@ -54,6 +81,14 @@
                         "required": true,
                         "type": "string",
                         "format": "uuid"
+                    },
+                    {
+                        "name": "api_key",
+                        "in": "query",
+                        "description": "your individual api key",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
                     }
                 ],
                 "tags": [
@@ -65,6 +100,23 @@
                         "description": "successful response",
                         "schema": {
                             "$ref": "#/definitions/DistrictDemographics"
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "description": "contains error message and status code",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "unauthorized error"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "401 status code"
+                                }
+                            }
                         }
                     },
                     "404": {
