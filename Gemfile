@@ -11,6 +11,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem "active_model_serializers", github: "rails-api/active_model_serializers"
 gem 'responders', '~> 2.0'
 gem 'swagger_engine'
+gem 'rails_12factor', group: :production
+gem 'bcrypt', '~> 3.1.7'
 
 group :development, :test do
   gem 'byebug'
@@ -18,6 +20,8 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'rspec-rails'
   gem 'shoulda-matchers', '~> 3.1'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :development do
