@@ -3,7 +3,7 @@ SimpleCov.start 'rails'
 
 module SpecHelpers
   def create_district_and_data
-    school_year = SchoolYear.create(years: "2015-2016")
+    school_year = SchoolYear.create(years: "2015-16")
     county = County.create(name: "King", number: "17", slug: "king")
     educational_service_district = EducationalServiceDistrict.create(name: "Puget Sound Educational Service District 121", slug: "puget-sound-educational-service-district-121")
     district = District.create(name: "Auburn School District", number: "17408", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "auburn-school-district")

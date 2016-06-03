@@ -67,8 +67,8 @@
                             "$ref": "#/definitions/DistrictDemographics"
                         }
                     },
-                    "400": {
-                        "description": "Data does not exist for the specified combination of school district and school year",
+                    "404": {
+                        "description": "Data does not exist for the specified combination of school district and school year. Includes specifics for which parameter could not be found",
                         "schema": {
                             "type": "object",
                             "description": "contains error message and status code",
@@ -79,7 +79,7 @@
                                 },
                                 "status": {
                                     "type": "string",
-                                    "description": "400 status code"
+                                    "description": "404 status code"
                                 }
                             }
                         }

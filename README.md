@@ -4,11 +4,14 @@ This app serves an API using data from the Washington State Department of Educat
 
 This was built as an independent study project during module 4 at the Turing School of Software and Design.
 
+** This API is still in development - it is not guaranteed to be continually backward compatible **
+
 ##### Current Endpoints
 
 * Districts: returns a list of all districts and their county and ESD
 * Demographics:
   * District: returns student demographics in specified school district & specified school year
+  * Data is currently available for the 2008 - 2009 school year through the 2014-2015 school year
 
 ### Production
 
