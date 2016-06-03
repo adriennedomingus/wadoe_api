@@ -5,8 +5,8 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      get '/districts',                           to: 'districts#index'
-      get '/demographics/districts',  to: 'demographics/districts#show'
+      get '/districts',                      to: 'districts#index'
+      get '/demographics/district-in-year',  to: 'demographics/districts#show'
     end
   end
 end

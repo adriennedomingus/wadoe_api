@@ -16,8 +16,11 @@
     "paths": {
         "/districts": {
             "get": {
-                "summary": "All districts",
+                "summary": "List of all districts",
                 "description": "This endpoint returns all school districts and includes its name, slug(used for querying about an individual district) and number, as well as the name and",
+                "tags": [
+                    "Districts"
+                ],
                 "responses": {
                     "200": {
                         "description": "successful response",
@@ -31,9 +34,9 @@
                 }
             }
         },
-        "/demographics/districts": {
+        "/demographics/district-in-year": {
             "get": {
-                "summary": "Student demographics for district and year",
+                "summary": "Student demographics for specified district in given year",
                 "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified school district for the specified school year. School district name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17'",
                 "parameters": [
                     {
@@ -52,6 +55,10 @@
                         "type": "string",
                         "format": "uuid"
                     }
+                ],
+                "tags": [
+                    "Districts",
+                    "Demographics"
                 ],
                 "responses": {
                     "200": {
