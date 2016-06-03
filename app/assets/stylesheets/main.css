@@ -1,0 +1,54 @@
+.container {
+  font-family: sans-serif;
+}
+
+.header {
+  background-color: #336699;
+  height: 50px;
+  font-family: sans-serif;
+  text-decoration: none;
+  color: white;
+}
+
+.logo {
+  display: inline-block;
+  float: left;
+  margin-left: 30px;
+  margin-top: 12px;
+}
+
+.navbar-links {
+  display: inline-block;
+  float: right;
+  margin-top: 15px;
+}
+
+.navbar-links > a {
+  text-decoration: none;
+  color: white;
+  padding-right: 30px;
+}
+
+.header > a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.5em;
+}
+
+.key {
+  padding: 75px;
+  border: 1px solid grey;
+  color: grey;
+  border-radius: 10px;
+  width: 50%;
+  margin: auto;
+  margin-top: 125px;
+  background-color: #C2D1E1;
+  text-align: center;
+  line-height: 50px;
+}
+
+.form-control {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

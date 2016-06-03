@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160601165102) do
+ActiveRecord::Schema.define(version: 20160603181805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,14 @@ ActiveRecord::Schema.define(version: 20160601165102) do
 
   add_index "student_enrollments", ["district_id"], name: "index_student_enrollments_on_district_id", using: :btree
   add_index "student_enrollments", ["school_year_id"], name: "index_student_enrollments_on_school_year_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
+    t.string   "email"
+    t.string   "password_digest"
+    t.string   "api_key"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   add_foreign_key "districts", "counties"
   add_foreign_key "districts", "educational_service_districts"

@@ -2,13 +2,32 @@
 <html>
 <head>
   <title>WadoeApi</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div class="header">
+  <%= link_to "WA Department of Education API", root_path, class: "logo" %>
+  <ul class="navbar-links">
+    <% if current_user %>
+      <%= link_to "Welcome #{current_user.email}", user_path(current_user) %>
+      <%= link_to "Log Out", logout_path %>
+    <% else %>
+      <%= link_to "Log In", login_path %>
+    <% end %>
+  </ul>
+</div>
 
-<%= yield %>
+<% flash.each do |type, message| %>
+  <div class="<%= type %>">
+    <%= message %>
+  </div>
+<% end %>
+<div class="container">
+  <%= yield %>
+</div>
 
 </body>
 </html>

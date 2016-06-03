@@ -1,0 +1,6 @@
+<%= form_for @user do |f| %>
+  <%= f.email_field :email, placeholder: "Email address", class: "form-control" %>
+  <%= f.password_field :password, placeholder: "Password", class: "form-control" %>
+  <%= f.password_field :password_confirmation, placeholder: "Confirm password", class: "form-control" %>
+  <%= f.submit "Generate Key", class: "btn btn-default" %>
+<% end %>

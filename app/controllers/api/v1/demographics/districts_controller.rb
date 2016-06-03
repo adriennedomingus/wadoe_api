@@ -4,13 +4,16 @@ class Api::V1::Demographics::DistrictsController < Api::ApiController
   def show
     district = District.find_by(slug: params["slug"])
     year = SchoolYear.find_by(years: params["year"])
+    key = params[:api_key]
     if invalid_request(district, year)
       message = invalid_request(district, year)
       response = { message: message, status: 404 }.to_json
       respond_with response, status: 404
-    else
+    elsif authenticated_api_key?(key)
       student_enrollment = StudentEnrollment.where(district_id: district.id, school_year_id: year.id)
       respond_with student_enrollment[0], serializer: DistrictDemographicsInYearSerializer
+    else
+      respond_with unauthorized_response, status: 401, head: :unauthorized
     end
   end
 
