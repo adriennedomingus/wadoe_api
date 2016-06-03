@@ -57,19 +57,22 @@ RSpec.describe Api::V1::Demographics::DistrictsController, type: :controller do
       }
 
       expect(district_demographics).to eq(result)
+      expect(response.code).to eq("200")
+
     end
 
     it "responds with error if school year doesn't exist" do
-      _, _, _, d = create_district_and_data
+      _, _, _, district = create_district_and_data
 
-      get :show, slug: d.slug, year: "2014-15", format: :json
+      get :show, slug: district.slug, year: "2014-15", format: :json
 
       expected_response = {
-        message: "We do not have data for that combination of school district and school year. Please try another query.",
-        status: 400
+        message: "We do not have data for that school year. Please try another query.",
+        status: 404
       }.to_json
 
       expect(response.body).to eq(expected_response)
+      expect(response.code).to eq("404")
     end
 
     it "responds with error if school district doesn't exist" do
@@ -78,11 +81,12 @@ RSpec.describe Api::V1::Demographics::DistrictsController, type: :controller do
       get :show, slug: 'fake-school-district', year: "2015-16", format: :json
 
       expected_response = {
-        message: "We do not have data for that combination of school district and school year. Please try another query.",
-        status: 400
+        message: "We do not have that school district in our system. Please try another query",
+        status: 404
       }.to_json
 
       expect(response.body).to eq(expected_response)
+      expect(response.code).to eq("404")
     end
   end
 end
