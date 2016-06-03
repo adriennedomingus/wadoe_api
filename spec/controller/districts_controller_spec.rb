@@ -38,6 +38,7 @@ RSpec.describe Api::V1::DistrictsController, type: :controller do
                   }]
 
       expect(districts).to eq(result)
+      expect(response.code).to eq("200")
     end
   end
 end
