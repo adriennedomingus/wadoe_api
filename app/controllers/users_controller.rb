@@ -11,7 +11,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect_to @user
     else
-      flash.now[:success] = "There was a problem with your request. Please make sure you entered a valid email that has not been used to generate an api key before, and that your passwords match"
+      flash.now[:danger] = "There was a problem with your request. Please make sure you entered a valid email that has not been used to generate an api key before, and that your passwords match"
       render :new
     end
   end

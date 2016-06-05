@@ -41,6 +41,21 @@ RSpec.feature "visitor creates and accesses API Key" do
     expect(page).to have_content("Your API key is: 123abc")
   end
 
+  scenario "existing user is not authenticated" do
+    user = User.create(email: "example@example.com", password: "password", api_key: "123abc")
+
+    visit login_path
+    fill_in :session_email, with: user.email
+    fill_in :session_password, with: "wrongpassword"
+    within(".form") do
+      click_on "Log In"
+    end
+
+    expect(page).to_not have_content("Welcome #{user.email}")
+    expect(page).to_not have_content("Your API key is: 123abc")
+    expect(page).to have_content("Your email and password combination is not recognized. Please try again.")
+  end
+
   scenario "existing user logs out" do
     user = User.create(email: "example@example.com", password: "password", api_key: "123abc")
 
@@ -58,5 +73,6 @@ RSpec.feature "visitor creates and accesses API Key" do
 
     expect(page).to_not have_content("Welcome #{user.email}")
     expect(page).to_not have_content("Your API key is: 123abc")
+    expect(page).to have_content("You have been logged out")
   end
 end
