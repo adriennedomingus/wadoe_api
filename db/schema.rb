@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160607231136) do
+ActiveRecord::Schema.define(version: 20160607233902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,18 +54,6 @@ ActiveRecord::Schema.define(version: 20160607231136) do
     t.string   "slug"
   end
 
-  create_table "exceptional_student_services", force: :cascade do |t|
-    t.float    "percent_special_education"
-    t.integer  "number_special_education"
-    t.float    "percent_504"
-    t.integer  "number_504"
-    t.integer  "student_enrollment_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-  end
-
-  add_index "exceptional_student_services", ["student_enrollment_id"], name: "index_exceptional_student_services_on_student_enrollment_id", using: :btree
-
   create_table "five_year_graduation_rates", force: :cascade do |t|
     t.integer  "district_id"
     t.integer  "school_year_id"
@@ -89,34 +77,6 @@ ActiveRecord::Schema.define(version: 20160607231136) do
   add_index "five_year_graduation_rates", ["school_year_id"], name: "index_five_year_graduation_rates_on_school_year_id", using: :btree
   add_index "five_year_graduation_rates", ["student_identifier_id"], name: "index_five_year_graduation_rates_on_student_identifier_id", using: :btree
 
-  create_table "genders", force: :cascade do |t|
-    t.float    "percent_male"
-    t.integer  "number_male"
-    t.float    "percent_female"
-    t.integer  "number_female"
-    t.integer  "student_enrollment_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-  end
-
-  add_index "genders", ["student_enrollment_id"], name: "index_genders_on_student_enrollment_id", using: :btree
-
-  create_table "other_demographics", force: :cascade do |t|
-    t.float    "percent_migrant"
-    t.integer  "number_migrant"
-    t.float    "percent_transitional_bilingual"
-    t.integer  "number_transitional_bilingual"
-    t.float    "percent_frl"
-    t.integer  "number_frl"
-    t.float    "percent_foster_care"
-    t.integer  "number_foster_care"
-    t.integer  "student_enrollment_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-  end
-
-  add_index "other_demographics", ["student_enrollment_id"], name: "index_other_demographics_on_student_enrollment_id", using: :btree
-
   create_table "population_demographics", force: :cascade do |t|
     t.integer  "number"
     t.float    "percent"
@@ -128,30 +88,6 @@ ActiveRecord::Schema.define(version: 20160607231136) do
 
   add_index "population_demographics", ["student_enrollment_id"], name: "index_population_demographics_on_student_enrollment_id", using: :btree
   add_index "population_demographics", ["student_identifier_id"], name: "index_population_demographics_on_student_identifier_id", using: :btree
-
-  create_table "race_ethnicities", force: :cascade do |t|
-    t.float    "percent_american_indian_or_alaskan_native"
-    t.integer  "number_american_indian_or_alaskan_native"
-    t.float    "percent_asian"
-    t.integer  "number_asian"
-    t.float    "percent_pacific_islander"
-    t.integer  "number_pacific_islander"
-    t.float    "percent_asian_pacific_islander"
-    t.integer  "number_asian_pacific_islander"
-    t.float    "percent_black"
-    t.integer  "number_black"
-    t.float    "percent_hispanic"
-    t.integer  "number_hispanic"
-    t.float    "percent_white"
-    t.integer  "number_white"
-    t.float    "percent_two_or_more"
-    t.integer  "number_two_or_more"
-    t.integer  "student_enrollment_id"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-  end
-
-  add_index "race_ethnicities", ["student_enrollment_id"], name: "index_race_ethnicities_on_student_enrollment_id", using: :btree
 
   create_table "school_years", force: :cascade do |t|
     t.string   "years"
@@ -196,16 +132,12 @@ ActiveRecord::Schema.define(version: 20160607231136) do
 
   add_foreign_key "districts", "counties"
   add_foreign_key "districts", "educational_service_districts"
-  add_foreign_key "exceptional_student_services", "student_enrollments"
   add_foreign_key "five_year_graduation_rates", "districts"
   add_foreign_key "five_year_graduation_rates", "dropouts"
   add_foreign_key "five_year_graduation_rates", "school_years"
   add_foreign_key "five_year_graduation_rates", "student_identifiers"
-  add_foreign_key "genders", "student_enrollments"
-  add_foreign_key "other_demographics", "student_enrollments"
   add_foreign_key "population_demographics", "student_enrollments"
   add_foreign_key "population_demographics", "student_identifiers"
-  add_foreign_key "race_ethnicities", "student_enrollments"
   add_foreign_key "student_enrollments", "districts"
   add_foreign_key "student_enrollments", "school_years"
   add_foreign_key "student_identifiers", "tags"
