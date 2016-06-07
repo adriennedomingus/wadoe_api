@@ -28,35 +28,11 @@ namespace :db do
           d.county_id = County.find_by(name: row["County"] || "N/A").id
           d.slug = row["District"].parameterize
         end
-        StudentEnrollment.create( school_year_id: SchoolYear.find_by(years: row["SchoolYear"]).id,
+        se = StudentEnrollment.create( school_year_id: SchoolYear.find_by(years: row["SchoolYear"]).id,
                                   total: row["TotalEnrollment"],
                                   students_per_classroom_teacher: row["StudentsPerClassroomTeacher"],
                                   district_id: District.find_by(name: row["District"]).id
                                 )
-        RaceEthnicity.create( percent_american_indian_or_alaskan_native: row["PercentAmericanIndianorAlaskanNative"],
-                              number_american_indian_or_alaskan_native: row["NumberAmericanIndianorAlaskanNative"],
-                              percent_asian: row["PercentAsian"],
-                              number_asian: row["NumberAsian"],
-                              percent_pacific_islander: row["PercentPacificIslander"],
-                              number_pacific_islander: row["NumberPacificIslander"],
-                              percent_asian_pacific_islander: row["PercentAsianPacificIslander"],
-                              number_asian_pacific_islander: row["NumberAsianPacificIslander"],
-                              percent_black: row["PercentBlack"],
-                              number_black: row["NumberBlack"],
-                              percent_hispanic: row["PercentHispanic"],
-                              number_hispanic: row["NumberHispanic"],
-                              percent_white: row["PercentWhite"],
-                              number_white: row["NumberWhite"],
-                              percent_two_or_more: row["PercentTwoOrMoreRaces"],
-                              number_two_or_more: row["NumberTwoOrMoreRaces"],
-                              student_enrollment_id: StudentEnrollment.last.id
-                            )
-        Gender.create( percent_male: row["PercentMales"],
-                       number_male: row["NumberMales"],
-                       percent_female: row["PercentFemales"],
-                       number_female: row["NumberFemales"],
-                       student_enrollment_id: StudentEnrollment.last.id
-                     )
 
         if row["NumberFosterCare"] == "N<10"
           number_foster_care = -10
@@ -64,22 +40,70 @@ namespace :db do
           number_foster_care = row["NumberFosterCare"]
         end
 
-        OtherDemographic.create( percent_migrant: row["PercentMigrant"],
-                                  number_migrant: row["NumberMigrant"],
-                                  percent_transitional_bilingual: row["PercentTransitionalBilingual"],
-                                  number_transitional_bilingual: row["NumberTransitionalBilingual"],
-                                  percent_frl: row["PercentFreeorReducedPricedMeals"],
-                                  number_frl: row["NumberFreeorReducedPricedMeals"],
-                                  percent_foster_care: row["PercentFosterCare"],
-                                  number_foster_care: number_foster_care,
-                                  student_enrollment_id: StudentEnrollment.last.id
-                                )
-        ExceptionalStudentService.create( percent_special_education: row["PercentSpecialEducation"],
-                                           number_special_education: row["NumberSpecialEducation"],
-                                           percent_504: row["PercentSection504"],
-                                           number_504: row["NumberSection504"],
-                                           student_enrollment_id: StudentEnrollment.last.id
-                                         )
+        PopulationDemographic.create(number: row["NumberFemales"],
+                                    percent: row["PercentFemales"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'female'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberMales"],
+                                    percent: row["PercentMales"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'male'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberAmericanIndianorAlaskanNative"],
+                                    percent: row["PercentAmericanIndianorAlaskanNative"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'american indian or alaskan native'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberAsian"],
+                                    percent: row["PercentAsian"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'asian'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberAsianPacificIslander"],
+                                    percent: row["PercentAsianPacificIslander"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'asian pacific islander'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberBlack"],
+                                    percent: row["PercentBlack"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'black or african american'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberHispanic"],
+                                    percent: row["PercentHispanic"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'hispanic or latino'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberPacificIslander"],
+                                    percent: row["PercentPacificIslander"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'pacific islander'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberTwoOrMoreRaces"],
+                                    percent: row["PercentTwoOrMoreRaces"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'two or more races'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberWhite"],
+                                    percent: row["PercentWhite"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'white'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: number_foster_care,
+                                    percent: row["PercentFosterCare"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'foster care'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberFreeorReducedPricedMeals"],
+                                    percent: row["PercentFreeorReducedPricedMeals"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'free or reduced price lunch'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberTransitionalBilingual"],
+                                    percent: row["PercentTransitionalBilingual"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'transitional bilingual'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberMigrant"],
+                                    percent: row["PercentMigrant"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'title i migrant'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberSection504"],
+                                    percent: row["PercentSection504"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'section 504'),
+                                    student_enrollment_id: se.id)
+        PopulationDemographic.create(number: row["NumberSpecialEducation"],
+                                    percent: row["PercentSpecialEducation"],
+                                    student_identifier_id: StudentIdentifier.find_by(name: 'special education'),
+                                    student_enrollment_id: se.id)
       end
     end
   end

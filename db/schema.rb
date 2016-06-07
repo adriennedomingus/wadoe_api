@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160607174025) do
+ActiveRecord::Schema.define(version: 20160607231136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,18 @@ ActiveRecord::Schema.define(version: 20160607174025) do
 
   add_index "other_demographics", ["student_enrollment_id"], name: "index_other_demographics_on_student_enrollment_id", using: :btree
 
+  create_table "population_demographics", force: :cascade do |t|
+    t.integer  "number"
+    t.float    "percent"
+    t.integer  "student_identifier_id"
+    t.integer  "student_enrollment_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "population_demographics", ["student_enrollment_id"], name: "index_population_demographics_on_student_enrollment_id", using: :btree
+  add_index "population_demographics", ["student_identifier_id"], name: "index_population_demographics_on_student_identifier_id", using: :btree
+
   create_table "race_ethnicities", force: :cascade do |t|
     t.float    "percent_american_indian_or_alaskan_native"
     t.integer  "number_american_indian_or_alaskan_native"
@@ -191,6 +203,8 @@ ActiveRecord::Schema.define(version: 20160607174025) do
   add_foreign_key "five_year_graduation_rates", "student_identifiers"
   add_foreign_key "genders", "student_enrollments"
   add_foreign_key "other_demographics", "student_enrollments"
+  add_foreign_key "population_demographics", "student_enrollments"
+  add_foreign_key "population_demographics", "student_identifiers"
   add_foreign_key "race_ethnicities", "student_enrollments"
   add_foreign_key "student_enrollments", "districts"
   add_foreign_key "student_enrollments", "school_years"
