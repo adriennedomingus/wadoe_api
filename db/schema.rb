@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160603181805) do
+ActiveRecord::Schema.define(version: 20160607174025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,16 @@ ActiveRecord::Schema.define(version: 20160603181805) do
   add_index "districts", ["county_id"], name: "index_districts_on_county_id", using: :btree
   add_index "districts", ["educational_service_district_id"], name: "index_districts_on_educational_service_district_id", using: :btree
 
+  create_table "dropouts", force: :cascade do |t|
+    t.integer  "year_1"
+    t.integer  "year_2"
+    t.integer  "year_3"
+    t.integer  "year_4"
+    t.integer  "year_5"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "educational_service_districts", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -55,6 +65,29 @@ ActiveRecord::Schema.define(version: 20160603181805) do
   end
 
   add_index "exceptional_student_services", ["student_enrollment_id"], name: "index_exceptional_student_services_on_student_enrollment_id", using: :btree
+
+  create_table "five_year_graduation_rates", force: :cascade do |t|
+    t.integer  "district_id"
+    t.integer  "school_year_id"
+    t.integer  "student_identifier_id"
+    t.integer  "dropout_id"
+    t.integer  "began_in_wa"
+    t.integer  "transferred_into_wa"
+    t.integer  "transferred_out"
+    t.integer  "adjusted_cohort"
+    t.integer  "graduates"
+    t.integer  "continuing"
+    t.float    "adjusted_five_year_cohort_graduation_percent"
+    t.float    "cohort_dropout_percent"
+    t.float    "continuing_percent"
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+  end
+
+  add_index "five_year_graduation_rates", ["district_id"], name: "index_five_year_graduation_rates_on_district_id", using: :btree
+  add_index "five_year_graduation_rates", ["dropout_id"], name: "index_five_year_graduation_rates_on_dropout_id", using: :btree
+  add_index "five_year_graduation_rates", ["school_year_id"], name: "index_five_year_graduation_rates_on_school_year_id", using: :btree
+  add_index "five_year_graduation_rates", ["student_identifier_id"], name: "index_five_year_graduation_rates_on_student_identifier_id", using: :btree
 
   create_table "genders", force: :cascade do |t|
     t.float    "percent_male"
@@ -126,6 +159,21 @@ ActiveRecord::Schema.define(version: 20160603181805) do
   add_index "student_enrollments", ["district_id"], name: "index_student_enrollments_on_district_id", using: :btree
   add_index "student_enrollments", ["school_year_id"], name: "index_student_enrollments_on_school_year_id", using: :btree
 
+  create_table "student_identifiers", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "student_identifiers", ["tag_id"], name: "index_student_identifiers_on_tag_id", using: :btree
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email"
     t.string   "password_digest"
@@ -137,9 +185,14 @@ ActiveRecord::Schema.define(version: 20160603181805) do
   add_foreign_key "districts", "counties"
   add_foreign_key "districts", "educational_service_districts"
   add_foreign_key "exceptional_student_services", "student_enrollments"
+  add_foreign_key "five_year_graduation_rates", "districts"
+  add_foreign_key "five_year_graduation_rates", "dropouts"
+  add_foreign_key "five_year_graduation_rates", "school_years"
+  add_foreign_key "five_year_graduation_rates", "student_identifiers"
   add_foreign_key "genders", "student_enrollments"
   add_foreign_key "other_demographics", "student_enrollments"
   add_foreign_key "race_ethnicities", "student_enrollments"
   add_foreign_key "student_enrollments", "districts"
   add_foreign_key "student_enrollments", "school_years"
+  add_foreign_key "student_identifiers", "tags"
 end

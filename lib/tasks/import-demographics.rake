@@ -1,12 +1,12 @@
 require 'csv'
 
-files = ['./app/assets/data/DistrictDemographics08-09.csv',
-         './app/assets/data/DistrictDemographics09-10.csv',
-         './app/assets/data/DistrictDemographics10-11.csv',
-         './app/assets/data/DistrictDemographics11-12.csv',
-         './app/assets/data/DistrictDemographics12-13.csv',
-         './app/assets/data/DistrictDemographics13-14.csv',
-         './app/assets/data/DistrictDemographics14-15.csv']
+files = ['./app/assets/data/demographics/DistrictDemographics08-09.csv',
+         './app/assets/data/demographics/DistrictDemographics09-10.csv',
+         './app/assets/data/demographics/DistrictDemographics10-11.csv',
+         './app/assets/data/demographics/DistrictDemographics11-12.csv',
+         './app/assets/data/demographics/DistrictDemographics12-13.csv',
+         './app/assets/data/demographics/DistrictDemographics13-14.csv',
+         './app/assets/data/demographics/DistrictDemographics14-15.csv']
 
 namespace :db do
   task import_demographic_data: :environment do
