@@ -6,4 +6,6 @@ class District < ActiveRecord::Base
   has_many :race_ethnicities,             through: :student_enrollments
   has_many :exceptional_student_services, through: :student_enrollments
   has_many :other_demographics,           through: :student_enrollments
+  has_many :five_year_graduation_rates
+  has_many :dropouts,                     through: :five_year_graduation_rates
 end
