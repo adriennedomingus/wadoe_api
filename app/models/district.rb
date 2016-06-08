@@ -1,11 +1,9 @@
 class District < ActiveRecord::Base
   belongs_to :educational_service_district
   belongs_to :county
-  has_many :student_enrollments
-  has_many :genders,                      through: :student_enrollments
-  has_many :race_ethnicities,             through: :student_enrollments
-  has_many :exceptional_student_services, through: :student_enrollments
-  has_many :other_demographics,           through: :student_enrollments
-  has_many :five_year_graduation_rates
-  has_many :dropouts,                     through: :five_year_graduation_rates
+
+  has_many :district_school_years
+  has_many :five_year_graduation_rates, through: :district_school_years
+  has_many :student_enrollments,        through: :district_school_years
+  has_many :population_demographics,    through: :district_school_years
 end

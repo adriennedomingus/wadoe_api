@@ -1,3 +1,3 @@
 class EducationalServiceDistrictSerializer < ActiveModel::Serializer
-  attributes :name, :slug
+   attributes :name, :slug
 end

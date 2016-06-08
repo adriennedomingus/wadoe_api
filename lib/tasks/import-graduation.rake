@@ -35,20 +35,22 @@ namespace :db do
         district = District.find_by(number: row["Dist"])
         school_year = SchoolYear.find_by(years: row["SchoolYear"])
         if district
-          FiveYearGraduationRate.create(district_id: district.id,
-                                        school_year_id: school_year.id,
-                                        student_identifier_id: identifier.id,
-                                        dropout_id: dropout.id,
-                                        began_in_wa: row["Began Grade 9 in Washington"].to_i,
-                                        transferred_into_wa: row["Transferred Into Washington"].to_i,
-                                        transferred_out: row["Transferred Out"].to_i,
-                                        adjusted_cohort: row["Adjusted Cohort"].to_i,
-                                        graduates: row["Graduates"].to_i,
-                                        continuing: row["Continuing"].to_i,
-                                        adjusted_five_year_cohort_graduation_percent: row["Adjusted 5-Year Cohoort Graduation Rate"].to_f,
-                                        cohort_dropout_percent: row["Cohort dropout rate"].to_f,
-                                        continuing_percent: row["Continuing Rate"].to_f
-                                        )
+          district_school_year = DistrictSchoolYear.find_by(district_id: district.id, school_year_id: school_year.id)
+          if district_school_year
+            FiveYearGraduationRate.create(district_school_year_id: district_school_year.id,
+                                          student_identifier_id: identifier.id,
+                                          dropout_id: dropout.id,
+                                          began_9_in_wa: row["Began Grade 9 in Washington"].to_i,
+                                          transferred_in: row["Transferred Into Washington"].to_i,
+                                          transferred_out: row["Transferred Out"].to_i,
+                                          adjusted_cohort: row["Adjusted Cohort"].to_i,
+                                          graduates: row["Graduates"].to_i,
+                                          continuing: row["Continuing"].to_i,
+                                          adjusted_five_year_cohort_graduation_rate: row["Adjusted 5-Year Cohoort Graduation Rate"].to_f,
+                                          cohort_dropout_rate: row["Cohort dropout rate"].to_f,
+                                          continuing_rate: row["Continuing Rate"].to_f
+                                          )
+          end
         end
       end
     end
