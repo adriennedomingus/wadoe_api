@@ -2,80 +2,79 @@ require 'simplecov'
 SimpleCov.start 'rails'
 
 module SpecHelpers
-  def create_district_and_data
-
+  def create_district_and_demographic_data
     create_tags_and_identifiers
     school_year = SchoolYear.create(years: "2015-16")
     county = County.create(name: "King", number: "17", slug: "king")
     educational_service_district = EducationalServiceDistrict.create(name: "Puget Sound Educational Service District 121", slug: "puget-sound-educational-service-district-121")
     district = District.create(name: "Auburn School District", number: "17408", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "auburn-school-district")
     student_enrollment = StudentEnrollment.create(total: 1378, students_per_classroom_teacher: 18)
-    district_school_year = DistrictSchoolYear.create(ditrict_id: district.id, school_year_id: school_year.id, student_enrollment_id: student_enrollment.id)
+    district_school_year = DistrictSchoolYear.create(district_id: district.id, school_year_id: school_year.id, student_enrollment_id: student_enrollment.id)
     PopulationDemographic.create(number: 234,
                                 percent: 49.2,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'female'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 276,
                                 percent: 50.8,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'male'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'male').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 134,
                                 percent: 14.2,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'american indian or alaskan native'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'american indian or alaskan native').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 362,
                                 percent: 12.3,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'asian'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'asian').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 12,
                                 percent: 41.1,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'asian pacific islander'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'asian pacific islander').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 144,
                                 percent: 13.4,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'black or african american'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'black or african american').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 123,
                                 percent: 45.3,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'hispanic or latino'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'hispanic or latino').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 34,
                                 percent: 13.3,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'pacific islander'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'pacific islander').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 132,
                                 percent: 12.8,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'two or more races'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'two or more races').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 145,
                                 percent: 54.5,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'white'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'white').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 16,
                                 percent: 1.2,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'foster care'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'foster care').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 543,
                                 percent: 84.5,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'free or reduced price lunch'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'free or reduced price lunch').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 45,
                                 percent: 10.1,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'transitional bilingual'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'transitional bilingual').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 172,
                                 percent: 1.7,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'title i migrant'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'title i migrant').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 124,
                                 percent: 3.3,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'section 504'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'section 504').id,
                                 district_school_year_id: district_school_year.id,)
     PopulationDemographic.create(number: 235,
                                 percent: 10.2,
-                                student_identifier_id: StudentIdentifier.find_by(name: 'special education'),
+                                student_identifier_id: StudentIdentifier.find_by(name: 'special education').id,
                                 district_school_year_id: district_school_year.id,)
-    [school_year, county, educational_service_district, district]
+    [school_year, county, educational_service_district, district, student_enrollment, district_school_year]
   end
 
   def create_tags_and_identifiers
