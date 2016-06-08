@@ -1,8 +1,5 @@
 class StudentEnrollment < ActiveRecord::Base
-  belongs_to :school_year
-  belongs_to :district
-  has_one    :race_ethnicity
-  has_one    :exceptional_student_service
-  has_one    :other_demographic
-  has_one    :gender
+  has_one :district_school_year
+  has_one :district, through: :district_school_year
+  has_one :school_year, through: :district_school_year
 end
