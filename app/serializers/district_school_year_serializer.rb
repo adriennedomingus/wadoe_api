@@ -1,16 +1,21 @@
 class DistrictSchoolYearSerializer < ActiveModel::Serializer
-  attributes :tags
   has_one :district
   has_one :school_year
   has_one :student_enrollment
+  attributes :demographics
 
-  def tags
+  def demographics
     all_tags = []
     object.tags.each do |tag|
-      custom_tag = tag.attributes
-      #Working in here right now to get tag -> student identifiers -> relevant population demographics
+      custom_tag = {tag.name => {}}
+      tag.student_identifiers.each do |si|
+        pd = si.population_demographics.where(district_school_year_id: object.id)[0]
+        if pd
+          custom_tag[tag.name][si.name] = { number: pd.number, percent: pd.percent }
+        end
+      end
       all_tags.push(custom_tag)
     end
-    all_tags
+    all_tags.uniq
   end
 end

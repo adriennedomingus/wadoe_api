@@ -4,58 +4,55 @@ RSpec.describe Api::V1::Demographics::DistrictsController, type: :controller do
   describe "GET show" do
     it "returns a specific districts demographic information" do
       user = User.create(email: "example@example.com", password: "password", api_key: "abc123")
-      school_year, county, educational_service_district, district, student_enrollment, district_school_year = create_district_and_demographic_data
+      school_year, _, _, district = create_district_and_demographic_data
 
       get :show, slug: district.slug, year: school_year.years, api_key: user.api_key, format: :json
       district_demographics = JSON.parse(response.body)
       result = {
-        # "total" => student_enrollment.total,
-        # "students_per_classroom_teacher" => student_enrollment.students_per_classroom_teacher,
-        # "district" => {
-        #   "name" => district.name,
-        #   "slug" => district.slug,
-        #   "number" => district.number,
-        # },
-        # "gender" => {
-        #   "percent_male" => gender.percent_male,
-        #   "number_male" => gender.number_male,
-        #   "percent_female" => gender.percent_female,
-        #   "number_female" => gender.number_female
-        # },
-        # "exceptional_student_service" => {
-        #   "percent_special_education" => exceptional_student_service.percent_special_education,
-        #   "number_special_education" => exceptional_student_service.number_special_education,
-        #   "percent_504" => exceptional_student_service.percent_504,
-        #   "number_504" => exceptional_student_service.number_504
-        # },
-        # "race_ethnicity" => {
-        #   "percent_american_indian_or_alaskan_native" => race_ethnicity.percent_american_indian_or_alaskan_native,
-        #   "number_american_indian_or_alaskan_native" => race_ethnicity.number_american_indian_or_alaskan_native,
-        #   "percent_asian" => race_ethnicity.percent_asian,
-        #   "number_asian" => race_ethnicity.number_asian,
-        #   "percent_pacific_islander" => race_ethnicity.percent_pacific_islander,
-        #   "number_pacific_islander" => race_ethnicity.number_pacific_islander,
-        #   "percent_asian_pacific_islander" => race_ethnicity.percent_asian_pacific_islander,
-        #   "number_asian_pacific_islander" => race_ethnicity.number_asian_pacific_islander,
-        #   "percent_black" => race_ethnicity.percent_black,
-        #   "number_black" => race_ethnicity.number_black,
-        #   "percent_hispanic" => race_ethnicity.percent_hispanic,
-        #   "number_hispanic" => race_ethnicity.number_hispanic,
-        #   "percent_white" => race_ethnicity.percent_white,
-        #   "number_white" => race_ethnicity.number_white,
-        #   "percent_two_or_more" => race_ethnicity.percent_two_or_more,
-        #   "number_two_or_more" => race_ethnicity.number_two_or_more},
-        # "other_demographic" => {
-        #   "percent_migrant" => other_demographic.percent_migrant,
-        #   "number_migrant" => other_demographic.number_migrant,
-        #   "percent_transitional_bilingual" => other_demographic.percent_transitional_bilingual,
-        #   "number_transitional_bilingual" => other_demographic.number_transitional_bilingual,
-        #   "percent_frl" => other_demographic.percent_frl,
-        #   "number_frl" => other_demographic.number_frl,
-        #   "percent_foster_care" => other_demographic.percent_foster_care,
-        #   "number_foster_care" => other_demographic.number_foster_care
-        # }
-      }
+        "demographics" => [ {"gender"=>
+                              {"female"=>{ "number"=>234,
+                                           "percent"=>49.2},
+                               "male"=>{ "number"=>276,
+                                         "percent"=>50.8}}},
+                            {"race ethnicity"=>
+                              {"american indian or alaskan native"=>{ "number"=>134,
+                                                                      "percent"=>14.2},
+                                "asian"=>{ "number"=>362,
+                                           "percent"=>12.3},
+                                "asian pacific islander"=>{ "number"=>12,
+                                                            "percent"=>41.1},
+                                "black or african american"=>{ "number"=>144,
+                                                               "percent"=>13.4},
+                                "hispanic or latino"=>{ "number"=>123,
+                                                        "percent"=>45.3},
+                                "pacific islander"=>{ "number"=>34,
+                                                      "percent"=>13.3},
+                                "two or more races"=>{ "number"=>132,
+                                                       "percent"=>12.8},
+                                "white"=>{ "number"=>145,
+                                           "percent"=>54.5}}},
+                            {"other"=>
+                              {"foster care"=>{ "number"=>16,
+                                                "percent"=>1.2},
+                                "free or reduced price lunch"=>{ "number"=>543,
+                                                                 "percent"=>84.5},
+                                "transitional bilingual"=>{ "number"=>45,
+                                                            "percent"=>10.1},
+                                "title i migrant"=>{ "number"=>172,
+                                                     "percent"=>1.7}}},
+                            {"exceptional student services"=>{
+                                "section 504"=>{ "number"=>124,
+                                                 "percent"=>3.3},
+                                "special education"=>{ "number"=>235,
+                                                       "percent"=>10.2}}}],
+       "district" => { "name"=>"Auburn School District",
+                        "number"=>"17408",
+                        "slug"=>"auburn-school-district" },
+       "school_year" => { "years"=>"2015-16" },
+       "student_enrollment" => {
+                                  "total"=>1378,
+                                  "students_per_classroom_teacher"=>18},
+                                }
 
       expect(district_demographics).to eq(result)
       expect(response.code).to eq("200")
