@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160608141036) do
+ActiveRecord::Schema.define(version: 20160608143351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20160608141036) do
     t.string   "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "slug"
   end
 
   create_table "district_school_years", force: :cascade do |t|
@@ -42,6 +43,7 @@ ActiveRecord::Schema.define(version: 20160608141036) do
     t.integer  "county_id"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.string   "slug"
   end
 
   add_index "districts", ["county_id"], name: "index_districts_on_county_id", using: :btree
@@ -61,6 +63,7 @@ ActiveRecord::Schema.define(version: 20160608141036) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "slug"
   end
 
   create_table "five_year_graduation_rates", force: :cascade do |t|
@@ -104,9 +107,9 @@ ActiveRecord::Schema.define(version: 20160608141036) do
 
   create_table "student_enrollments", force: :cascade do |t|
     t.integer  "total"
-    t.integer  "students_per_classroom"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.integer  "students_per_classroom_teacher"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "student_identifiers", force: :cascade do |t|
