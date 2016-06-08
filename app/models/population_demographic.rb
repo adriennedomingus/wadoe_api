@@ -1,4 +1,5 @@
 class PopulationDemographic < ActiveRecord::Base
-  belongs_to :student_identifiers
-  belongs_to :student_enrollments
+  belongs_to :student_identifier
+  belongs_to :student_enrollment
+  belongs_to :district
 end

@@ -5,4 +5,6 @@ RSpec.describe District, type: :model do
   it { should belong_to :county }
   it { should have_many :five_year_graduation_rates }
   it { should have_many :dropouts }
+  it { should have_many :student_enrollments }
+  it { should have_many :population_demographics }
 end
