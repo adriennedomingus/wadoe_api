@@ -16,6 +16,13 @@ class UsersController < ApplicationController
     end
   end
 
+  def update
+    if current_user
+      current_user.update(api_key: SecureRandom.hex)
+    end
+    redirect_to current_user
+  end
+
   private
     def user_params
       params.require(:user).permit(:email, :password, :password_confirmation)

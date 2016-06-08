@@ -1,3 +1,5 @@
 <div class="key">
   Your API key is: <%= current_user.api_key %>
+  <br/>
+  <%= link_to "Generate New API Key", user_path(current_user), method: :patch %> (your current key will no longer be valid)
 </div>

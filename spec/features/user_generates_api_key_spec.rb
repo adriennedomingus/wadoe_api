@@ -15,6 +15,21 @@ RSpec.feature "visitor creates and accesses API Key" do
     expect(page).to have_content("Welcome adrienne.domingus@gmail.com")
   end
 
+  scenario "user can regenerate api key" do
+    user = User.create(email: "example@example.com", password: "password", api_key: "123abc")
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+    visit user_path(user)
+
+    expect(page).to have_content("Your API key is:")
+    expect(page).to have_content("Welcome example@example.com")
+
+    click_on "Generate New API Key"
+
+    expect(page).to have_content("Your API key is:")
+    expect(page).to have_content("Welcome example@example.com")
+  end
+
   scenario "new user password confirmation does not match" do
     visit '/'
     click_on "Generate API Key"
