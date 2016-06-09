@@ -99,7 +99,7 @@ namespace :db do
                                         adjusted_cohort: row["Adjusted Cohort"].to_i,
                                         graduates: row["Graduates"].to_i,
                                         continuing: row["Continuing"].to_i,
-                                        adjusted_five_year_cohort_graduation_rate: row["Adjusted 5-Year Cohoort Graduation Rate"].to_f,
+                                        adjusted_five_year_cohort_graduation_rate: row["Adjusted 5-Year Cohort Graduation Rate"].to_f,
                                         cohort_dropout_rate: row["Cohort dropout rate"].to_f,
                                         continuing_rate: row["Continuing Rate"].to_f
                                         )
