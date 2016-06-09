@@ -1,4 +1,4 @@
-class Api::V1::Demographics::DistrictsController < Api::ApiController
+class Api::V1::Graduation::DistrictsController < Api::ApiController
   respond_to :json
 
   def show
@@ -11,7 +11,7 @@ class Api::V1::Demographics::DistrictsController < Api::ApiController
       respond_with response, status: 404
     elsif authenticated_api_key?(key)
       district_school_year = DistrictSchoolYear.find_by(district_id: district.id, school_year_id: year.id)
-      respond_with district_school_year, serializer: DistrictSchoolYearDemographicsSerializer
+      respond_with district_school_year, serializer: DistrictSchoolYearGraduationSerializer
     else
       respond_with unauthorized_response, status: 401, head: :unauthorized
     end
