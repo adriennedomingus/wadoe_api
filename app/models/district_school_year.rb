@@ -7,7 +7,4 @@ class DistrictSchoolYear < ActiveRecord::Base
   has_many :population_demographics
   has_many :student_identifiers, through: :five_year_graduation_rates
   has_many :tags, through: :student_identifiers
-  # has_many :student_identifiers, through: :population_demographics
-  # has_many :tags, through: :student_identifiers
-
 end
