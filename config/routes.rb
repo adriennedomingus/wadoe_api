@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get '/districts',                      to: 'districts#index'
       get '/demographics/district-in-year',  to: 'demographics/districts#show'
+      get '/graduation/district-in-year',    to: 'graduation/districts#show'
     end
   end
 end
