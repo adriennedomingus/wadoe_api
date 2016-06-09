@@ -1,6 +1,8 @@
 require 'csv'
 
-files = [
+files = ['./app/assets/data/demographics/DistrictDemographics10-11.csv',
+         './app/assets/data/demographics/DistrictDemographics11-12.csv',
+         './app/assets/data/demographics/DistrictDemographics12-13.csv',
          './app/assets/data/demographics/DistrictDemographics13-14.csv']
 
 namespace :db do
@@ -34,6 +36,7 @@ namespace :db do
         else
           number_foster_care = row["NumberFosterCare"]
         end
+
         PopulationDemographic.create(number: row["NumberFemales"],
                                     percent: row["PercentFemales"],
                                     student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
