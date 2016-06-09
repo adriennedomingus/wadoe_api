@@ -1,8 +1,6 @@
 require 'csv'
 
-files = ['./app/assets/data/demographics/DistrictDemographics10-11.csv',
-         './app/assets/data/demographics/DistrictDemographics11-12.csv',
-         './app/assets/data/demographics/DistrictDemographics12-13.csv',
+files = [
          './app/assets/data/demographics/DistrictDemographics13-14.csv']
 
 namespace :db do

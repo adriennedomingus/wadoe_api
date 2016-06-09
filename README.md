@@ -9,7 +9,7 @@ This was built as an independent study project during module 4 at the Turing Sch
 * Districts: returns a list of all districts and their county and Educational Service District
 * Demographics:
   * District: returns student demographics in specified school district & specified school year
-  * Data is currently available for the 2010 - 2011 school year through the 2013-2014 school year
+  * Data is currently available for the 2013-2014 school year, but more will be added shortly
 * Graduation:
   * District: returns graduation data in specified school district & specified school year, broken down by student demographic
 

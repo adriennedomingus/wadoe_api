@@ -17,7 +17,7 @@
         "/districts": {
             "get": {
                 "summary": "List of all districts",
-                "description": "This endpoint returns all school districts and includes its name, slug(used for querying about an individual district) and number, as well as the name and",
+                "description": "This endpoint returns all school districts and includes its name, slug(used for querying about an individual district) and number, as well as the name and basic enrollment data. Data is currently only available for the 2013-14 school year, but more will be added shortly.",
                 "parameters": [
                     {
                         "name": "api_key",
@@ -64,7 +64,7 @@
         "/demographics/district-in-year": {
             "get": {
                 "summary": "Student demographics for specified district in given year",
-                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified school district for the specified school year. School district name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17'",
+                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified school district for the specified school year. School district name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17'. Data is currently only available for the 2013-14 school year, but more will be added shortly.",
                 "parameters": [
                     {
                         "name": "slug",
@@ -142,7 +142,7 @@
         "/graduation/district-in-year": {
             "get": {
                 "summary": "Five year graduation rates for the specified school district and year",
-                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified school district for the specified school year. School district name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17' (This year would produce results for the class of 2016)",
+                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified school district for the specified school year. School district name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17' (This year would produce results for the class of 2016). Data is currently only available for the 2013-14 school year, but more will be added shortly.",
                 "parameters": [
                     {
                         "name": "slug",
