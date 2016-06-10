@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      @user.update(api_key: SecureRandom.hex)
+      @user.generate_api_key
       session[:user_id] = @user.id
       redirect_to @user
     else
@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 
   def update
     if current_user
-      current_user.update(api_key: SecureRandom.hex)
+      current_user.generate_api_key
     end
     redirect_to current_user
   end
