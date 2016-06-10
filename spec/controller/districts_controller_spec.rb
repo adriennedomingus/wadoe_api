@@ -37,7 +37,6 @@ RSpec.describe Api::V1::DistrictsController, type: :controller do
 
       expect(response.code).to eq("401")
       expect(expected_response).to eq(response.body)
-
     end
   end
 end
