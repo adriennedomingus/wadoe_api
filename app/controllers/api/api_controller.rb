@@ -32,7 +32,11 @@ class Api::ApiController < ApplicationController
       [response, {status: 404} ]
     elsif authenticated_api_key?(key)
       district_school_year = DistrictSchoolYear.find_by(district_id: district.id, school_year_id: year.id)
-      [district_school_year, { serializer: serializer }]
+      if params[:graduation_tag]
+        [district_school_year, serializer: serializer, scope: params[:graduation_tag]]
+      else
+        [district_school_year, { serializer: serializer }]
+      end
     else
       [unauthorized_response, { status: 401, head: :unauthorized }]
     end

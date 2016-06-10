@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Graduation::DistrictsController, type: :controller do
   describe "GET show" do
-    it "returns a specific districts demographic information" do
+    it "returns a specific districts graduation statistics" do
       user = User.create(email: "example@example.com", password: "password", api_key: "abc123")
       school_year, _, _, district = create_district_and_demographic_data
 
@@ -12,6 +12,23 @@ RSpec.describe Api::V1::Graduation::DistrictsController, type: :controller do
 
       expect(district_demographics["graduation"]).to be_truthy
       expect(district_demographics["graduation"][1]["race ethnicity"]["asian"]["transferred_out"]).to be_truthy
+      expect(district_demographics["graduation"][3]["exceptional student services"]).to be_truthy
+      expect(district_demographics["graduation"][4]["all"]).to be_truthy
+      expect(district_demographics["graduation"][2]["other"]).to be_truthy
+      expect(district_demographics["graduation"][0]["gender"]).to be_truthy
+      expect(response.code).to eq("200")
+    end
+
+    it "returns a specific districts graduation statistics scoped by tag" do
+      user = User.create(email: "example@example.com", password: "password", api_key: "abc123")
+      school_year, _, _, district = create_district_and_demographic_data
+
+      get :show, slug: district.slug, year: school_year.years, api_key: user.api_key, graduation_tag: "race ethnicity", format: :json
+      district_demographics = JSON.parse(response.body)
+
+      expect(district_demographics["graduation"]).to be_truthy
+      expect(district_demographics["graduation"][0]["race ethnicity"]["asian"]["transferred_out"]).to be_truthy
+      expect(district_demographics["graduation"][1]).to be_falsy
       expect(response.code).to eq("200")
     end
 
