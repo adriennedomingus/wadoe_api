@@ -171,7 +171,7 @@
                     {
                         "name": "graduation_tag",
                         "in": "query",
-                        "description": "name of tag you would like response to be scoped by. Options are - 'all', 'race%20ethnicity', 'other', 'gender', 'exceptional%20student%20services'. Limit 1.",
+                        "description": "name of tag you would like response to be scoped by. Options are - 'all', 'race ethnicity', 'other', 'gender', 'exceptional student services'. Limit 1.",
                         "required": false,
                         "type": "string",
                         "format": "uuid"
