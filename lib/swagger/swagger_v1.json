@@ -26,6 +26,22 @@
                         "required": true,
                         "type": "string",
                         "format": "uuid"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "the number of objects you would like returned on each page. Defaults to 25 if not provided",
+                        "required": false,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "which page of the response you would like returned. Defaults to 1 if not provided",
+                        "required": false,
+                        "type": "string",
+                        "format": "uuid"
                     }
                 ],
                 "tags": [
