@@ -62,6 +62,21 @@ RSpec.describe Api::V1::Graduation::DistrictsController, type: :controller do
       expect(response.code).to eq("404")
     end
 
+    it "responds with error if school district and school year don't exist" do
+      user = User.create(email: "example@example.com", password: "password", api_key: "abc123")
+      create_district_and_demographic_data
+
+      get :show, slug: 'fake-school-district', year: "2012-13", api_key: user.api_key, format: :json
+
+      expected_response = {
+        message: "We do not have data for that school district or school year. Please try another query.",
+        status: 404
+      }.to_json
+
+      expect(response.body).to eq(expected_response)
+      expect(response.code).to eq("404")
+    end
+
     it "requires a valid API key" do
       school_year, _, _, district = create_district_and_demographic_data
 
