@@ -13,6 +13,10 @@ This was built as an independent study project during module 4 at the Turing Sch
 * Graduation:
   * District: returns graduation data in specified school district & specified school year, broken down by student demographic
 
+#### Blogs
+[Using Swagger for API Documentation](http://www.adriennedomingus.com/blogs/api-documentation-with-swagger)
+[Iterating on Database Architecture](http://www.adriennedomingus.com/blogs/iterating-on-database-architecture)
+
 ### Production
 
 The production app can be found [here](https://wadoe-api.herokuapp.com/) - this will take you to documentation for using the API
@@ -28,7 +32,7 @@ The production app can be found [here](https://wadoe-api.herokuapp.com/) - this 
 1. Clone down the repository
 2. From the project directory:
   * `bundle`
-  * `rake db:create db:migrate db:import_demographic_data`
+  * `rake db:create db:migrate db:import_demographic_data db:import_graduation_data`
 
 ### Testing
 
