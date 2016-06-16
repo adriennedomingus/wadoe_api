@@ -15,6 +15,7 @@ gem 'rails_12factor', group: :production
 gem 'bcrypt', '~> 3.1.7'
 gem 'will_paginate'
 gem 'api-pagination'
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'byebug'
