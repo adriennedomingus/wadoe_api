@@ -11,7 +11,8 @@ This was built as an independent study project during module 4 at the Turing Sch
   * District: returns student demographics in specified school district & specified school year
   * Data is currently available for the 2013-2014 school year, but more will be added shortly
 * Graduation:
-  * District: returns graduation data in specified school district & specified school year, broken down by student demographic
+  * District: returns five-year graduation data in specified school district & specified school year, broken down by student demographic
+  * County: returns five-year graduation data in specified county & specified school year, broken down by student demographic
 
 #### Blogs
 [Using Swagger for API Documentation](http://www.adriennedomingus.com/blogs/api-documentation-with-swagger)
