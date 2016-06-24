@@ -13,18 +13,6 @@ class Api::ApiController < ApplicationController
     response_path(county, serializer, params)
   end
 
-  def response_path(object, serializer, params)
-    year = SchoolYear.find_by(years: params["year"])
-    key = params[:api_key]
-    if invalid_request(object, year)
-      response_to_invalid_request(object, year)
-    elsif authenticated_api_key?(key)
-      response_to_authenticated_request(object, year, serializer, params)
-    else
-      [unauthorized_response, { status: 401, head: :unauthorized }]
-    end
-  end
-
   def authenticated_api_key?(key)
     User.find_by(api_key: key)
   end
@@ -35,6 +23,18 @@ class Api::ApiController < ApplicationController
   end
 
   private
+
+    def response_path(object, serializer, params)
+      year = SchoolYear.find_by(years: params["year"])
+      key = params[:api_key]
+      if invalid_request(object, year)
+        response_to_invalid_request(object, year)
+      elsif authenticated_api_key?(key)
+        response_to_authenticated_request(object, year, serializer, params)
+      else
+        [unauthorized_response, { status: 401, head: :unauthorized }]
+      end
+    end
 
     def response_to_invalid_request(district, year)
       message = invalid_request(district, year)
