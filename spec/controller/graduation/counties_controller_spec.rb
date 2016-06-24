@@ -53,7 +53,7 @@ RSpec.describe Api::V1::Graduation::CountiesController, type: :controller do
       get :show, slug: 'fake-school-district', year: "2015-16", api_key: user.api_key, format: :json
 
       expected_response = {
-        message: "We do not have that school district in our system. Please try another query",
+        message: "We do not have that school district/county in our system. Please try another query",
         status: 404
       }.to_json
 
@@ -68,7 +68,7 @@ RSpec.describe Api::V1::Graduation::CountiesController, type: :controller do
       get :show, slug: 'fake-school-district', year: "2012-13", api_key: user.api_key, format: :json
 
       expected_response = {
-        message: "We do not have data for that school district or school year. Please try another query.",
+        message: "We do not have data for that school district/county or school year. Please try another query.",
         status: 404
       }.to_json
 

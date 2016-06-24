@@ -66,9 +66,9 @@ class Api::ApiController < ApplicationController
 
     def invalid_request(district, year)
       if invalid_district_and_year(district, year)
-        "We do not have data for that school district or school year. Please try another query."
+        "We do not have data for that school district/county or school year. Please try another query."
       elsif invalid_school_district(district, year)
-        "We do not have that school district in our system. Please try another query"
+        "We do not have that school district/county in our system. Please try another query"
       elsif invalid_school_year(district, year)
         "We do not have data for that school year. Please try another query."
       end
