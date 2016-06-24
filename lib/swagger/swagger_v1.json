@@ -80,7 +80,7 @@
         "/demographics/district-in-year": {
             "get": {
                 "summary": "Student demographics for specified district in given year",
-                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified school district for the specified school year. School district name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17'",
+                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified county for the specified school year. County name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17'. The state has provided slightly different data for each school year, so there may be some empty values.",
                 "parameters": [
                     {
                         "name": "slug",
@@ -240,6 +240,92 @@
                     }
                 }
             }
+        },
+        "/graduation/county-in-year": {
+            "get": {
+                "summary": "Five year graduation rates for the specified county and year",
+                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified school district for the specified school year. School district name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17' (This year would produce results for the class of 2016)",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "query",
+                        "description": "slug of county name",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "year",
+                        "in": "query",
+                        "description": "school year for which data is being requested",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "api_key",
+                        "in": "query",
+                        "description": "your individual api key",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "graduation_tag",
+                        "in": "query",
+                        "description": "name of tag you would like response to be scoped by. Options are - 'all', 'race ethnicity', 'other', 'gender', 'exceptional student services'. Limit 1.",
+                        "required": false,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "tags": [
+                    "Counties",
+                    "Graduation"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful response",
+                        "schema": {
+                            "$ref": "#/definitions/CountyGraduation"
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "description": "contains error message and status code",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "unauthorized error"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "401 status code"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data does not exist for the specified combination of county and school year. Includes specifics for which parameter could not be found",
+                        "schema": {
+                            "type": "object",
+                            "description": "contains error message and status code",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "specific error"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "404 status code"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -268,17 +354,45 @@
                         }
                     }
                 },
-                "county": {
+                "district": {
                     "type": "object",
-                    "description": "Details about the county in which the district is located",
+                    "description": "basic information about the requested district",
                     "properties": {
                         "name": {
                             "type": "string",
-                            "description": "Name of the county"
+                            "description": "Name of the school district"
+                        },
+                        "number": {
+                            "type": "string",
+                            "description": "School district number"
                         },
                         "slug": {
                             "type": "string",
-                            "description": "Parameterized name of the county. To be used for any calls requesting data for a specific County"
+                            "description": "parameterized name of the school district, to be used in queries for this district"
+                        }
+                    }
+                },
+                "school_year": {
+                    "type": "object",
+                    "description": "school year requested",
+                    "properties": {
+                        "years": {
+                            "type": "string",
+                            "description": "School year requested"
+                        }
+                    }
+                },
+                "student_enrollment": {
+                    "type": "object",
+                    "description": "general student enrollment numbers for the district",
+                    "properties": {
+                        "total": {
+                            "type": "integer",
+                            "description": "total number of students enrolled in district"
+                        },
+                        "students_per_classroom_teacher": {
+                            "type": "integer",
+                            "description": "Average number of students per classroom teacher"
                         }
                     }
                 }
@@ -591,7 +705,7 @@
         "DistrictGraduation": {
             "type": "object",
             "properties": {
-                "demographics": {
+                "graduation": {
                     "type": "array",
                     "description": "Student graduation statistics broken down by student identifier",
                     "items": {
@@ -1893,6 +2007,1298 @@
                         "students_per_classroom_teacher": {
                             "type": "integer",
                             "description": "Average number of students per classroom teacher"
+                        }
+                    }
+                }
+            }
+        },
+        "CountyGraduation": {
+            "type": "object",
+            "properties": {
+                "graduation": {
+                    "type": "array",
+                    "description": "Student graduation statistics broken down by student identifier",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "all": {
+                                "type": "object",
+                                "description": "Graduation statistics for the entire county",
+                                "properties": {
+                                    "all": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for entire county",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "race ethnicity": {
+                                "type": "object",
+                                "description": "All student race ethnicity demographics",
+                                "properties": {
+                                    "american indian or alaskan native": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for American Indian or Alaskan Native students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "asian": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for Asian students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "asian pacific islander": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for Asian Pacific Islander Students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "black or african american": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for Black or African American students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "hispanic or latino": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for Hispanic or Latino students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "pacific islander": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for Pacific Islander students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "two or more races": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for students of two or more races",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "white": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for White students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "gender": {
+                                "type": "object",
+                                "description": "gender demographics",
+                                "properties": {
+                                    "male": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for male students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "female": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for female students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "other": {
+                                "type": "object",
+                                "description": "other demographic indicators",
+                                "properties": {
+                                    "foster care": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for students in foster care",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "free or reduced price lunch": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for students who receive free or reduced price meals",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "homeless": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for homeless students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "transitional bilingual": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for transitional bilingual students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "title i migrant": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for title I migrant students",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "exceptional student services": {
+                                "type": "object",
+                                "description": "other demographic indicators",
+                                "properties": {
+                                    "section 504": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for students with section 504 plans",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "special education": {
+                                        "type": "object",
+                                        "description": "Graduation statistics for students who receive special education services",
+                                        "properties": {
+                                            "began_9_in_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who began 9th grade in Washington"
+                                            },
+                                            "transferred_into_wa": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred into Washington"
+                                            },
+                                            "transferred_out": {
+                                                "type": "integer",
+                                                "description": "number of students who transferred out of Washington"
+                                            },
+                                            "adjusted_cohort": {
+                                                "type": "integer",
+                                                "description": "number of students after accounting for transfers"
+                                            },
+                                            "graduates": {
+                                                "type": "integer",
+                                                "description": "number of students who graduated"
+                                            },
+                                            "continuing": {
+                                                "type": "integer",
+                                                "description": "number of students continuing to pursue graduation"
+                                            },
+                                            "adjusted_five_year_cohort_graduation_rate": {
+                                                "type": "integer",
+                                                "description": "percent of students who graduated after accounting for transfers"
+                                            },
+                                            "cohort_dropout_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who dropped out"
+                                            },
+                                            "continuing_rate": {
+                                                "type": "integer",
+                                                "description": "Percent of students who are continuing to pursue graduation"
+                                            },
+                                            "dropouts": {
+                                                "type": "object",
+                                                "description": "Number of students who dropped out in each year",
+                                                "properties": {
+                                                    "year1": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year1"
+                                                    },
+                                                    "year2": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year2"
+                                                    },
+                                                    "year3": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year3"
+                                                    },
+                                                    "year4": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year4"
+                                                    },
+                                                    "year5": {
+                                                        "type": "integer",
+                                                        "description": "number of students who dropped out in year5"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "county": {
+                    "type": "object",
+                    "description": "basic information about the requested county",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the school county"
+                        },
+                        "slug": {
+                            "type": "string",
+                            "description": "parameterized name of the school county, to be used in queries for this county"
+                        }
+                    }
+                },
+                "school_year": {
+                    "type": "object",
+                    "description": "school year requested",
+                    "properties": {
+                        "years": {
+                            "type": "string",
+                            "description": "School year requested"
                         }
                     }
                 }

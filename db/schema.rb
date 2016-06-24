@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160608143351) do
+ActiveRecord::Schema.define(version: 20160623222244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 20160608143351) do
     t.datetime "updated_at", null: false
     t.string   "slug"
   end
+
+  create_table "county_school_years", force: :cascade do |t|
+    t.integer  "school_year_id"
+    t.integer  "county_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "county_school_years", ["county_id"], name: "index_county_school_years_on_county_id", using: :btree
+  add_index "county_school_years", ["school_year_id"], name: "index_county_school_years_on_school_year_id", using: :btree
 
   create_table "district_school_years", force: :cascade do |t|
     t.integer  "school_year_id"
@@ -57,6 +67,7 @@ ActiveRecord::Schema.define(version: 20160608143351) do
     t.integer  "year_5"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "total"
   end
 
   create_table "educational_service_districts", force: :cascade do |t|
@@ -81,8 +92,10 @@ ActiveRecord::Schema.define(version: 20160608143351) do
     t.float    "continuing_rate"
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
+    t.integer  "county_school_year_id"
   end
 
+  add_index "five_year_graduation_rates", ["county_school_year_id"], name: "index_five_year_graduation_rates_on_county_school_year_id", using: :btree
   add_index "five_year_graduation_rates", ["district_school_year_id"], name: "index_five_year_graduation_rates_on_district_school_year_id", using: :btree
   add_index "five_year_graduation_rates", ["dropout_id"], name: "index_five_year_graduation_rates_on_dropout_id", using: :btree
   add_index "five_year_graduation_rates", ["student_identifier_id"], name: "index_five_year_graduation_rates_on_student_identifier_id", using: :btree
@@ -135,11 +148,14 @@ ActiveRecord::Schema.define(version: 20160608143351) do
     t.datetime "updated_at",      null: false
   end
 
+  add_foreign_key "county_school_years", "counties"
+  add_foreign_key "county_school_years", "school_years"
   add_foreign_key "district_school_years", "districts"
   add_foreign_key "district_school_years", "school_years"
   add_foreign_key "district_school_years", "student_enrollments"
   add_foreign_key "districts", "counties"
   add_foreign_key "districts", "educational_service_districts"
+  add_foreign_key "five_year_graduation_rates", "county_school_years"
   add_foreign_key "five_year_graduation_rates", "district_school_years"
   add_foreign_key "five_year_graduation_rates", "dropouts"
   add_foreign_key "five_year_graduation_rates", "student_identifiers"

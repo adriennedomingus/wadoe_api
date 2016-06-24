@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get '/districts',                      to: 'districts#index'
       get '/demographics/district-in-year',  to: 'demographics/districts#show'
       get '/graduation/district-in-year',    to: 'graduation/districts#show'
+      get '/graduation/county-in-year',      to: 'graduation/counties#show'
     end
   end
 end

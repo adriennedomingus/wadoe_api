@@ -10,6 +10,7 @@ module SpecHelpers
     district = District.create(name: "Auburn School District", number: "17408", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "auburn-school-district")
     student_enrollment = StudentEnrollment.create(total: 1378, students_per_classroom_teacher: 18)
     district_school_year = DistrictSchoolYear.create(district_id: district.id, school_year_id: school_year.id, student_enrollment_id: student_enrollment.id)
+    county_school_year = CountySchoolYear.create(county_id: county.id, school_year_id: school_year.id)
     PopulationDemographic.create(number: 234,
                                 percent: 49.2,
                                 student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
@@ -89,6 +90,7 @@ module SpecHelpers
                                                             continuing_rate: 49.2,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 276,
                                                             transferred_in: 50.8,
@@ -101,6 +103,7 @@ module SpecHelpers
                                                             continuing_rate: 50.8,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'male').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 134,
                                                             transferred_in: 14.2,
@@ -113,6 +116,7 @@ module SpecHelpers
                                                             continuing_rate: 14.2,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'american indian or alaskan native').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 362,
                                                             transferred_in: 12.3,
@@ -125,6 +129,7 @@ module SpecHelpers
                                                             continuing_rate: 12.3,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'asian').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 12,
                                                             transferred_in: 41.1,
@@ -137,6 +142,7 @@ module SpecHelpers
                                                             continuing_rate: 41.1,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'asian pacific islander').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 144,
                                                             transferred_in: 13.4,
@@ -149,6 +155,7 @@ module SpecHelpers
                                                             continuing_rate: 13.4,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'black or african american').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 123,
                                                             transferred_in: 45.3,
@@ -161,6 +168,7 @@ module SpecHelpers
                                                             continuing_rate: 45.3,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'hispanic or latino').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 34,
                                                             transferred_in: 13.3,
@@ -173,6 +181,7 @@ module SpecHelpers
                                                             continuing_rate: 13.3,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'pacific islander').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 132,
                                                             transferred_in: 12.8,
@@ -185,6 +194,7 @@ module SpecHelpers
                                                             continuing_rate: 12.8,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'two or more races').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 145,
                                                             transferred_in: 54.5,
@@ -197,6 +207,7 @@ module SpecHelpers
                                                             continuing_rate: 54.5,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'white').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 16,
                                                             transferred_in: 1.2,
@@ -209,6 +220,7 @@ module SpecHelpers
                                                             continuing_rate: 1.2,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'foster care').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 543,
                                                             transferred_in: 84.5,
@@ -221,6 +233,7 @@ module SpecHelpers
                                                             continuing_rate: 84.5,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'free or reduced price lunch').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 45,
                                                             transferred_in: 10.1,
@@ -233,6 +246,7 @@ module SpecHelpers
                                                             continuing_rate: 10.1,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'transitional bilingual').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 172,
                                                             transferred_in: 1.7,
@@ -245,6 +259,7 @@ module SpecHelpers
                                                             continuing_rate: 1.7,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'title i migrant').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 124,
                                                             transferred_in: 3.3,
@@ -257,6 +272,7 @@ module SpecHelpers
                                                             continuing_rate: 3.3,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'section 504').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 235,
                                                             transferred_in: 10.2,
@@ -269,6 +285,7 @@ module SpecHelpers
                                                             continuing_rate: 10.2,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'special education').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 235,
                                                             transferred_in: 10.2,
@@ -281,6 +298,7 @@ module SpecHelpers
                                                             continuing_rate: 10.2,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'homeless').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
                                 FiveYearGraduationRate.create(began_9_in_wa: 235,
                                                             transferred_in: 10.2,
@@ -293,6 +311,7 @@ module SpecHelpers
                                                             continuing_rate: 10.2,
                                                             student_identifier_id: StudentIdentifier.find_by(name: 'all').id,
                                                             district_school_year_id: district_school_year.id,
+                                                            county_school_year_id: county_school_year.id,
                                                             dropout_id: dropout.id)
     [school_year, county, educational_service_district, district, student_enrollment, district_school_year]
   end

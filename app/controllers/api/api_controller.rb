@@ -16,6 +16,19 @@ class Api::ApiController < ApplicationController
     end
   end
 
+  def county_in_year_repsonse(params, serializer)
+    county = County.find_by(slug: params["slug"])
+    year = SchoolYear.find_by(years: params["year"])
+    key = params[:api_key]
+    if invalid_request(county, year)
+      response_to_invalid_request(county, year)
+    elsif authenticated_api_key?(key)
+      response_to_authenticated_county_request(county, year, serializer, params)
+    else
+      [unauthorized_response, { status: 401, head: :unauthorized }]
+    end
+  end
+
   def authenticated_api_key?(key)
     User.find_by(api_key: key)
   end
@@ -42,11 +55,20 @@ class Api::ApiController < ApplicationController
       end
     end
 
+    def response_to_authenticated_county_request(county, year, serializer, params)
+      county_school_year = CountySchoolYear.find_by(county_id: county.id, school_year_id: year.id)
+      if params[:graduation_tag]
+        [county_school_year, serializer: serializer, scope: params[:graduation_tag]]
+      else
+        [county_school_year, { serializer: serializer }]
+      end
+    end
+
     def invalid_request(district, year)
       if invalid_district_and_year(district, year)
-        "We do not have data for that school district or school year. Please try another query."
+        "We do not have data for that school district/county or school year. Please try another query."
       elsif invalid_school_district(district, year)
-        "We do not have that school district in our system. Please try another query"
+        "We do not have that school district/county in our system. Please try another query"
       elsif invalid_school_year(district, year)
         "We do not have data for that school year. Please try another query."
       end
@@ -62,5 +84,17 @@ class Api::ApiController < ApplicationController
 
     def invalid_school_year(district, year)
       !year && district
+    end
+
+    def invalid_county_and_year(county, year)
+      !year && !county
+    end
+
+    def invalid_school_county(county, year)
+      year && !county
+    end
+
+    def invalid_school_year(county, year)
+      !year && county
     end
 end

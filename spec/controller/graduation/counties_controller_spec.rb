@@ -1,29 +1,28 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Graduation::DistrictsController, type: :controller do
+RSpec.describe Api::V1::Graduation::CountiesController, type: :controller do
   describe "GET show" do
     it "returns a specific districts graduation statistics" do
       user = User.create(email: "example@example.com", password: "password", api_key: "abc123")
-      school_year, _, _, district = create_district_and_demographic_data
+      school_year, county = create_district_and_demographic_data
 
-      get :show, slug: district.slug, year: school_year.years, api_key: user.api_key, format: :json
-      district_demographics = JSON.parse(response.body)
+      get :show, slug: county.slug, year: school_year.years, api_key: user.api_key, format: :json
+      county_graduation = JSON.parse(response.body)
 
-
-      expect(district_demographics["graduation"]).to be_truthy
-      expect(district_demographics["graduation"][1]["race ethnicity"]["asian"]["transferred_out"]).to be_truthy
-      expect(district_demographics["graduation"][3]["exceptional student services"]).to be_truthy
-      expect(district_demographics["graduation"][4]["all"]).to be_truthy
-      expect(district_demographics["graduation"][2]["other"]).to be_truthy
-      expect(district_demographics["graduation"][0]["gender"]).to be_truthy
+      expect(county_graduation["graduation"]).to be_truthy
+      expect(county_graduation["graduation"][1]["race ethnicity"]["asian"]["transferred_out"]).to be_truthy
+      expect(county_graduation["graduation"][3]["exceptional student services"]).to be_truthy
+      expect(county_graduation["graduation"][4]["all"]).to be_truthy
+      expect(county_graduation["graduation"][2]["other"]).to be_truthy
+      expect(county_graduation["graduation"][0]["gender"]).to be_truthy
       expect(response.code).to eq("200")
     end
 
     it "returns a specific districts graduation statistics scoped by tag" do
       user = User.create(email: "example@example.com", password: "password", api_key: "abc123")
-      school_year, _, _, district = create_district_and_demographic_data
+      school_year, county = create_district_and_demographic_data
 
-      get :show, slug: district.slug, year: school_year.years, api_key: user.api_key, graduation_tag: "race ethnicity", format: :json
+      get :show, slug: county.slug, year: school_year.years, api_key: user.api_key, graduation_tag: "race ethnicity", format: :json
       district_demographics = JSON.parse(response.body)
 
       expect(district_demographics["graduation"]).to be_truthy
@@ -34,9 +33,9 @@ RSpec.describe Api::V1::Graduation::DistrictsController, type: :controller do
 
     it "responds with error if school year doesn't exist" do
       user = User.create(email: "example@example.com", password: "password", api_key: "abc123")
-      _, _, _, district = create_district_and_demographic_data
+      _, county = create_district_and_demographic_data
 
-      get :show, slug: district.slug, year: "2014-15", api_key: user.api_key, format: :json
+      get :show, slug: county.slug, year: "2014-15", api_key: user.api_key, format: :json
 
       expected_response = {
         message: "We do not have data for that school year. Please try another query.",
@@ -78,10 +77,10 @@ RSpec.describe Api::V1::Graduation::DistrictsController, type: :controller do
     end
 
     it "requires a valid API key" do
-      school_year, _, _, district = create_district_and_demographic_data
+      school_year, county = create_district_and_demographic_data
 
 
-      get :show, slug: district.slug, year: school_year.years, format: :json
+      get :show, slug: county.slug, year: school_year.years, format: :json
 
       expected_response = { message: "Please include a valid API key with your request", status: 401 }.to_json
 
