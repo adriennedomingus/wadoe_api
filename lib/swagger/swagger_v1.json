@@ -77,6 +77,69 @@
                 }
             }
         },
+        "/counties": {
+            "get": {
+                "summary": "List of all counties",
+                "description": "This endpoint returns all counties and includes its name, slug(used for querying about an individual district) and number, as well as the name, number, and slug of all all districts within that county",
+                "parameters": [
+                    {
+                        "name": "api_key",
+                        "in": "query",
+                        "description": "your individual api key",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "the number of objects you would like returned on each page. Defaults to 25 if not provided",
+                        "required": false,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "which page of the response you would like returned. Defaults to 1 if not provided",
+                        "required": false,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "tags": [
+                    "Counties"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/County"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "description": "contains error message and status code",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "unauthorized error"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "401 status code"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/demographics/district-in-year": {
             "get": {
                 "summary": "Student demographics for specified district in given year",
@@ -393,6 +456,45 @@
                         "students_per_classroom_teacher": {
                             "type": "integer",
                             "description": "Average number of students per classroom teacher"
+                        }
+                    }
+                }
+            }
+        },
+        "County": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the county"
+                },
+                "number": {
+                    "type": "string",
+                    "description": "County number"
+                },
+                "slug": {
+                    "type": "string",
+                    "description": "Parameterized name of the county. To be used for any calls requesting data for a specific county"
+                },
+                "districts": {
+                    "type": "array",
+                    "description": "All student demographics for given district and school year",
+                    "items": {
+                        "type": "object",
+                        "description": "District information",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Name of the school district"
+                            },
+                            "number": {
+                                "type": "string",
+                                "description": "School district number"
+                            },
+                            "slug": {
+                                "type": "string",
+                                "description": "parameterized name of the school district, to be used in queries for this district"
+                            }
                         }
                     }
                 }
