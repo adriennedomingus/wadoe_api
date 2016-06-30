@@ -143,7 +143,7 @@
         "/demographics/district-in-year": {
             "get": {
                 "summary": "Student demographics for specified district in given year",
-                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified county for the specified school year. County name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17'. The state has provided slightly different data for each school year, so there may be some empty values.",
+                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in the specified county for the specified school year. County name should be passed as the parameterized version (slug). The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17'. The state has provided slightly different data for each school year, so there may be some empty values. NOTE: if the number in foster care is -10, that means that the district provided a result of 'N<10'",
                 "parameters": [
                     {
                         "name": "slug",
