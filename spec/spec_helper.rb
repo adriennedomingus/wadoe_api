@@ -10,9 +10,6 @@ module SpecHelpers
     district = District.create(name: "Auburn School District", number: "17408", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "auburn-school-district")
     student_enrollment = StudentEnrollment.create(total: 1378, students_per_classroom_teacher: 18)
     district_school_year = DistrictSchoolYear.create(district_id: district.id, school_year_id: school_year.id, student_enrollment_id: student_enrollment.id)
-    district2 = District.create(name: "Seattle School District", number: "17408", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "auburn-school-district")
-    student_enrollment2 = StudentEnrollment.create(total: 2475, students_per_classroom_teacher: 18)
-    district_school_year = DistrictSchoolYear.create(district_id: district2.id, school_year_id: school_year.id, student_enrollment_id: student_enrollment2.id)
     county_school_year = CountySchoolYear.create(county_id: county.id, school_year_id: school_year.id)
     PopulationDemographic.create(number: 234,
                                 percent: 49.2,
