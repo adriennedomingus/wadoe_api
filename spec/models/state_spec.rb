@@ -9,4 +9,11 @@ RSpec.describe State, type: :model do
 
     expect(State.total_students_in_school_year("2015-16")).to eq(3853)
   end
+
+  it "finds the number and percent of students of specific demographic in state in school year" do
+    create_district_and_demographic_data
+    total, percent = State.number_and_percent_students_of_demographic_in_school_year("2015-16", "white")
+    expect(total).to eq(145)
+    expect(percent).to eq(10.52)
+  end
 end
