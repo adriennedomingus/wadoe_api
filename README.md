@@ -1,8 +1,8 @@
 ### Introduction
 
-This app serves an API using data from the Washington State Department of Education. It currently serves a limited amount of data, but I will continue to add to this as time allows. The production app includes documentation of how to use each endpoint.
+This app serves an API using data from the Washington State Department of Education. It currently serves a limited amount of data - see the `Future Development` section for what's to come. The production app includes documentation of how to use each endpoint, built using Swagger
 
-This was built as an independent study project during module 4 at the Turing School of Software and Design.
+This was started as an independent study project during module 4 at the Turing School of Software and Design, but development continues.
 
 ##### Current Endpoints
 
@@ -15,13 +15,22 @@ This was built as an independent study project during module 4 at the Turing Sch
   * District: returns five-year graduation data in specified school district & specified school year, broken down by student demographic
   * County: returns five-year graduation data in specified county & specified school year, broken down by student demographic
 
+#### Future Development
+
+The following things are on my list to do:
+* Add additional years of data to existing endpoints
+* Add additional endpoints. Most notably missing is student performance data.
+* Add data visualization, both raw data and comparison of district and county results to state averages
+
+**See a bug? Have another feature you'd like to see? Drop me a line, or pull requests are happily accepted!**
+
 #### Blogs
 [Using Swagger for API Documentation](http://www.adriennedomingus.com/blogs/api-documentation-with-swagger)
 [Iterating on Database Architecture](http://www.adriennedomingus.com/blogs/iterating-on-database-architecture)
 
 ### Production
 
-The production app can be found [here](https://wadoe-api.herokuapp.com/) - this will take you to documentation for using the API
+The production app can be found [here](https://wadoe-api.herokuapp.com/) - this will take you to documentation for using the API.
 
 ### Stack
 
