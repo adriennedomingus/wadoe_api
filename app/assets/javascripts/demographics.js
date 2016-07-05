@@ -9,7 +9,8 @@ function getData(districtSlug) {
     dataType: "json",
     success: function(data) {
       var demData = data.demographics[0]["race ethnicity"];
-      setChart(demData);
+      var districtName = data.district.name;
+      setChart(demData, districtName);
     }
   });
 }
@@ -20,7 +21,7 @@ function getDistrict(){
   });
 }
 
-function setChart(demData) {
+function setChart(demData, districtName) {
   var keys = [];
   for (var key in demData) {
     keys.push(key);
@@ -36,7 +37,7 @@ function setChart(demData) {
       type: 'pie'
     },
     title: {
-      text: 'test'
+      text: districtName
     },
     series: [{
       name: 'Number of students:',
