@@ -1,5 +1,6 @@
 <div class="key">
   <p><%= link_to "API Documentation", documentation_path %></p>
+  <p><%= link_to "Graphs & Charts", visualization_path %></p>
   <p>New user? <%= link_to "Generate API Key", new_user_path %></p>
   <% if current_user %>
     <p>Already have an API key? <%= link_to "View Your Key", user_path(current_user) %></p>
