@@ -1,16 +1,22 @@
 $( document ).ready(function() {
-  getData();
+  getDistrict();
 });
 
-function getData() {
+function getData(districtSlug) {
   $.ajax({
     type: "GET",
-    url: "/api/v1/demographics/district-in-year?slug=issaquah-school-district&year=2012-13&api_key=60e02836a9eadb9fd175c0709dd4715b",
+    url: "/api/v1/demographics/district-in-year?slug=" + districtSlug + "&year=2012-13&api_key=60e02836a9eadb9fd175c0709dd4715b",
     dataType: "json",
     success: function(data) {
       var demData = data.demographics[0]["race ethnicity"];
       setChart(demData);
     }
+  });
+}
+
+function getDistrict(){
+  $('#district_slug').change(function(){
+    getData(this.value);
   });
 }
 

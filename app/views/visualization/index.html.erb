@@ -1,2 +1,3 @@
+<%= select("district", "slug", @districts.collect {|d| [ d.name, d.slug ] }, { :include_blank => true }) %>
 <div id="district-demographics">
 </div>
