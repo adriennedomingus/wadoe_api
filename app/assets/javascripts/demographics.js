@@ -2,26 +2,33 @@ $( document ).ready(function() {
   getDistrict();
 });
 
-function getData(districtSlug) {
+function getData(districtSlug, schoolYear) {
   $.ajax({
     type: "GET",
-    url: "/api/v1/demographics/district-in-year?slug=" + districtSlug + "&year=2012-13&api_key=60e02836a9eadb9fd175c0709dd4715b",
+    url: "/api/v1/demographics/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=60e02836a9eadb9fd175c0709dd4715b",
     dataType: "json",
     success: function(data) {
       var demData = data.demographics[0]["race ethnicity"];
       var districtName = data.district.name;
-      setChart(demData, districtName);
+      setChart(demData, districtName, schoolYear);
     }
   });
 }
 
 function getDistrict(){
+  var districtName = 'seattle-public-schools';
+  var schoolYear = '2013-14';
   $('#district_slug').change(function(){
-    getData(this.value);
+    districtName = this.value;
+    getData(districtName, schoolYear);
+  });
+  $('.school-year-button').click(function(){
+    schoolYear = this.id;
+    getData(districtName, schoolYear);
   });
 }
 
-function setChart(demData, districtName) {
+function setChart(demData, districtName, schoolYear ) {
   var keys = [];
   for (var key in demData) {
     keys.push(key);
@@ -37,7 +44,7 @@ function setChart(demData, districtName) {
       type: 'pie'
     },
     title: {
-      text: districtName
+      text: districtName + ": " + schoolYear
     },
     series: [{
       name: 'Number of students:',

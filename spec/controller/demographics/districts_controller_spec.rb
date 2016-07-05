@@ -9,10 +9,10 @@ RSpec.describe Api::V1::Demographics::DistrictsController, type: :controller do
       get :show, slug: district.slug, year: school_year.years, api_key: user.api_key, format: :json
       district_demographics = JSON.parse(response.body)
 
-      expect(district_demographics["demographics"][0]["gender"]).to be_truthy
-      expect(district_demographics["demographics"][1]["race ethnicity"]).to be_truthy
+      expect(district_demographics["demographics"][0]["race ethnicity"]).to be_truthy
+      expect(district_demographics["demographics"][1]["exceptional student services"]).to be_truthy
       expect(district_demographics["demographics"][2]["other"]).to be_truthy
-      expect(district_demographics["demographics"][3]["exceptional student services"]).to be_truthy
+      expect(district_demographics["demographics"][3]["gender"]).to be_truthy
       expect(district_demographics["district"]).to be_truthy
       expect(district_demographics["school_year"]).to be_truthy
       expect(district_demographics["student_enrollment"]).to be_truthy

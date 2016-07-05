@@ -1,3 +1,15 @@
-<%= select("district", "slug", @districts.collect {|d| [ d.name, d.slug ] }, { :include_blank => true }) %>
-<div id="district-demographics">
+<div class="row">
+  <div class="col-md-3">
+    <%= select("district", "slug", @districts.collect {|d| [ d.name, d.slug ] }, { :include_blank => true }) %>
+    <p class="btn btn-default school-year-button" id="2010-11">2010-11</p>
+    <br />
+    <p class="btn btn-default school-year-button" id="2011-12">2011-12</p>
+    <br />
+    <p class="btn btn-default school-year-button" id="2012-13">2012-13</p>
+    <br />
+    <p class="btn btn-default school-year-button" id="2013-14">2013-11</p>
+    <br />
+  </div>
+  <div id="district-demographics" class="col-md-9">
+  </div>
 </div>
