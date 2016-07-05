@@ -58,8 +58,6 @@ class Api::ApiController < ApplicationController
         [object_school_year, serializer: serializer, scope: params[:graduation_tag]]
       elsif serializer
         [object_school_year, { serializer: serializer }]
-      else
-        object_school_year
       end
     end
 
