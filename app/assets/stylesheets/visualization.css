@@ -1,0 +1,22 @@
+#district-demographics {
+  width: 70%;
+  float: right;
+}
+
+.school-year-button {
+  margin: 10px;
+  margin-left: 50%;
+  position: relative;
+}
+
+#drop-down {
+  margin: 10px;
+  margin-left: 8%;
+  position: relative;
+}
+
+#district-dem-instructions {
+  font-size: 2em;
+  text-align: center;
+  margin: 25px;
+}

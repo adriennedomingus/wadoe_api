@@ -6,7 +6,7 @@ class DistrictSchoolYearDemographicsSerializer < ActiveModel::Serializer
 
   def demographics
     all_tags = []
-    object.tags.each do |tag|
+    Tag.all.each do |tag|
       unless tag.name == "all"
         custom_tag = {tag.name => {}}
         tag.student_identifiers.each do |si|
