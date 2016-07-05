@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'
 
-  get 'visualization', to: 'visualization#index'
+  get 'visualization/demographics', to: 'visualization/demographics#index'
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
