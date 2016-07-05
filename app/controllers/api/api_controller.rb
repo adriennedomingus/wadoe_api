@@ -47,6 +47,8 @@ class Api::ApiController < ApplicationController
         return_object = DistrictSchoolYear.find_by(district_id: object.id, school_year_id: year.id)
       elsif object.class == County
         return_object = CountySchoolYear.find_by(county_id: object.id, school_year_id: year.id)
+      else
+        return_object = State.new(year.years)
       end
       response_object(return_object, serializer, params)
     end
@@ -54,8 +56,10 @@ class Api::ApiController < ApplicationController
     def response_object(object_school_year, serializer, params)
       if params[:graduation_tag]
         [object_school_year, serializer: serializer, scope: params[:graduation_tag]]
-      else
+      elsif serializer
         [object_school_year, { serializer: serializer }]
+      else
+        object_school_year
       end
     end
 
