@@ -218,6 +218,76 @@
                 }
             }
         },
+        "/demographics/statewide-in-year": {
+            "get": {
+                "summary": "Student demographics for specified district in given year",
+                "description": "This endpoint returns the gender, race & ethnicity, students who receive exceptional student services, and other demographic information on all students in Washington State. The school year should be passed as the full year for the starting year, and the last two digits of the ending year. This can only span one school year. For example - '2016-17'. The state has provided slightly different data for each school year, so there may be some empty values. NOTE: if the number in foster care is -10, that means that the district provided a result of 'N<10'",
+                "parameters": [
+                    {
+                        "name": "year",
+                        "in": "query",
+                        "description": "school year for which data is being requested",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "api_key",
+                        "in": "query",
+                        "description": "your individual api key",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "tags": [
+                    "State",
+                    "Demographics"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful response",
+                        "schema": {
+                            "$ref": "#/definitions/StateDemographics"
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "description": "contains error message and status code",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "unauthorized error"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "401 status code"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data does not exist for the school year. Includes specifics for which parameter could not be found",
+                        "schema": {
+                            "type": "object",
+                            "description": "contains error message and status code",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "specific error"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "404 status code"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/graduation/district-in-year": {
             "get": {
                 "summary": "Five year graduation rates for the specified school district and year",
@@ -799,6 +869,268 @@
                         "students_per_classroom_teacher": {
                             "type": "integer",
                             "description": "Average number of students per classroom teacher"
+                        }
+                    }
+                }
+            }
+        },
+        "StateDemographics": {
+            "type": "object",
+            "properties": {
+                "demographics": {
+                    "type": "array",
+                    "description": "All student demographics for given district and school year",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "gender": {
+                                "type": "object",
+                                "description": "gender demographics",
+                                "properties": {
+                                    "male": {
+                                        "type": "object",
+                                        "description": "number and percent of male students",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of male students in district"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students in district who are male"
+                                            }
+                                        }
+                                    },
+                                    "female": {
+                                        "type": "object",
+                                        "description": "number and percent of female students",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of female students in district"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students in district who are female"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "race ethnicity": {
+                                "type": "object",
+                                "description": "All student race ethnicity demographics",
+                                "properties": {
+                                    "american indian or alaskan native": {
+                                        "type": "object",
+                                        "description": "number and percent of American Indian or Alaskan Native students",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of American Indian or Alaskan Native students in district"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students in district who are American Indian or Alaskan Native"
+                                            }
+                                        }
+                                    },
+                                    "asian": {
+                                        "type": "object",
+                                        "description": "number and percent of Asian students",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of Asian students in district"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students in district who are Asian"
+                                            }
+                                        }
+                                    },
+                                    "asian pacific islander": {
+                                        "type": "object",
+                                        "description": "number and percent of Asian Pacific Islander students",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of Asian Pacific Islander students in district"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students in district who are Asian Pacific Islander"
+                                            }
+                                        }
+                                    },
+                                    "black or african american": {
+                                        "type": "object",
+                                        "description": "number and percent of Black or African American students",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of Black or African American students in district"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students in district who are Black or African American"
+                                            }
+                                        }
+                                    },
+                                    "hispanic or latino": {
+                                        "type": "object",
+                                        "description": "number and percent of Hispanic or Latino students",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of Hispanic or Latino students in district"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students in district who are Hispanic or Latino"
+                                            }
+                                        }
+                                    },
+                                    "pacific islander": {
+                                        "type": "object",
+                                        "description": "number and percent of Pacific Islander students",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of Pacific Islander students in district"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students in district who are Pacific Islander"
+                                            }
+                                        }
+                                    },
+                                    "two or more races": {
+                                        "type": "object",
+                                        "description": "number and percent of students who are two or more races",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of students in district who are two or more races"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students in district who are two or more races"
+                                            }
+                                        }
+                                    },
+                                    "white": {
+                                        "type": "object",
+                                        "description": "number and percent of White students",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of White students in district"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students in district who are White"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "other": {
+                                "type": "object",
+                                "description": "other demographic indicators",
+                                "properties": {
+                                    "foster care": {
+                                        "type": "object",
+                                        "description": "number and percent of students who are in foster care",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of students who are in foster care"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students who are in foster care"
+                                            }
+                                        }
+                                    },
+                                    "free or reduced price lunch": {
+                                        "type": "object",
+                                        "description": "number and percent of students who receive free or reduced price lunch",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of students who receive free or reduced price lunch"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students who receive free or reduced price lunch"
+                                            }
+                                        }
+                                    },
+                                    "transitional bilingual": {
+                                        "type": "object",
+                                        "description": "number and percent of students who are transitional bilingual",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of students who are transitional bilingual"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students who are transitional bilingual"
+                                            }
+                                        }
+                                    },
+                                    "title i migrant": {
+                                        "type": "object",
+                                        "description": "number and percent of students who are Title I Migrant",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of students who are Title I Migrant"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students who are Title I Migrant"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "exceptional student services": {
+                                "type": "object",
+                                "description": "other demographic indicators",
+                                "properties": {
+                                    "section 504": {
+                                        "type": "object",
+                                        "description": "number and percent of students who have section 504 plans",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of students who have section 504 plans"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students who have section 504 plans"
+                                            }
+                                        }
+                                    },
+                                    "special education": {
+                                        "type": "object",
+                                        "description": "number and percent of students who receive special education services",
+                                        "properties": {
+                                            "number": {
+                                                "type": "integer",
+                                                "description": "number of students who receive special education services"
+                                            },
+                                            "percent": {
+                                                "type": "integer",
+                                                "description": "percent of students who receive special education services"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
