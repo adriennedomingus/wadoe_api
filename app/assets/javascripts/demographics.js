@@ -10,8 +10,8 @@ function getData(districtSlug, schoolYear) {
     dataType: "json",
     success: function(data) {
       var demData = data.demographics[0]["race ethnicity"];
-      var districtName = data.district.name;
-      setChart(demData, districtName, schoolYear);
+      var chartTitle = data.district.name + ": " + schoolYear;
+      createHighChart('#district-demographics', demData, chartTitle);
     }
   });
 }
@@ -23,58 +23,46 @@ function getStateData(schoolYear){
     dataType: "json",
     success: function(data) {
       var demData = data.demographics[0]["race ethnicity"];
-      setStateChart(demData, schoolYear);
+      var chartTitle = "State Averages: " + schoolYear;
+      createHighChart('#state-demographics', demData, chartTitle);
     }
   });
 }
 
 function getDistrictAndSchoolYear(){
-  var districtName = 'seattle-public-schools';
+  var districtSlug = 'seattle-public-schools';
   var schoolYear = '2013-14';
   $('#district_slug').change(function(){
-    districtName = this.value;
-    getData(districtName, schoolYear);
+    districtSlug = this.value;
+    getData(districtSlug, schoolYear);
     getStateData(schoolYear);
   });
   $('.school-year-button').click(function(){
     schoolYear = this.id;
-    getData(districtName, schoolYear);
+    getData(districtSlug, schoolYear);
     getStateData(schoolYear);
   });
 }
 
-function setChart(demData, districtName, schoolYear ) {
+function demographicsChartDetails(demData, chartTitle){
   var chartData = formatChartData(demData);
-  $('#district-demographics').highcharts({
-    chart: {
-      type: 'pie'
-    },
-    title: {
-      text: districtName + ": " + schoolYear
-    },
-    series: [{
-      name: 'Number of students:',
-      colorByPoint: true,
-      data: chartData
-    }]
-  });
+  return {chart: {
+    type: 'pie'
+  },
+  title: {
+    text: chartTitle
+  },
+  series: [{
+    name: 'Number of students:',
+    colorByPoint: true,
+    data: chartData
+  }]};
 }
 
-function setStateChart(demData, schoolYear){
-  var chartData = formatChartData(demData);
-  $('#state-demographics').highcharts({
-    chart: {
-      type: 'pie'
-    },
-    title: {
-      text: "State Averages: " + schoolYear
-    },
-    series: [{
-      name: 'Number of students:',
-      colorByPoint: true,
-      data: chartData
-    }]
-  });
+function createHighChart(divName, demData, chartTitle){
+  $(divName).highcharts(
+    demographicsChartDetails(demData, chartTitle)
+  );
 }
 
 function formatChartData(demData){
