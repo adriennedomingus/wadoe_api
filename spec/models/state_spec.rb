@@ -16,4 +16,12 @@ RSpec.describe State, type: :model do
     expect(total).to eq(145)
     expect(percent).to eq(10.52)
   end
+
+  it "averages the vie_year_graduation_rates" do
+    create_district_and_demographic_data
+    white_average = State.new("2015-16").average_adjusted_five_year_cohort_graduation_rate_by_demographic_in_school_year("2015-16", "white")
+    female_average = State.new("2015-16").average_adjusted_five_year_cohort_graduation_rate_by_demographic_in_school_year("2015-16", "female")
+    expect(white_average).to eq(54.5)
+    expect(female_average).to eq(49.2)
+  end
 end
