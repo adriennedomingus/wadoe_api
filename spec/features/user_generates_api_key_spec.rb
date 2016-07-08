@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.feature "visitor creates and accesses API Key" do
   scenario "new user generates key" do
     visit '/'
-    click_on "Generate API Key"
+    click_on "Sign Up (Get an API Key)"
 
     fill_in :user_email,                 with: "adrienne.domingus@gmail.com"
     fill_in :user_password,              with: "password"
@@ -12,7 +12,6 @@ RSpec.feature "visitor creates and accesses API Key" do
     click_on "Generate Key"
 
     expect(page).to have_content("Your API key is:")
-    expect(page).to have_content("Welcome adrienne.domingus@gmail.com")
   end
 
   scenario "user can regenerate api key" do
@@ -22,17 +21,16 @@ RSpec.feature "visitor creates and accesses API Key" do
     visit user_path(user)
 
     expect(page).to have_content("Your API key is:")
-    expect(page).to have_content("Welcome example@example.com")
 
-    click_on "Generate New API Key"
+    click_on "Your API Key"
 
     expect(page).to have_content("Your API key is:")
-    expect(page).to have_content("Welcome example@example.com")
+    expect(page).to have_content("Your API Key")
   end
 
   scenario "new user password confirmation does not match" do
     visit '/'
-    click_on "Generate API Key"
+    click_on "Sign Up (Get an API Key)"
 
     fill_in :user_email,                 with: "adrienne.domingus@gmail.com"
     fill_in :user_password,              with: "password"
@@ -52,7 +50,7 @@ RSpec.feature "visitor creates and accesses API Key" do
       click_on "Log In"
     end
 
-    expect(page).to have_content("Welcome #{user.email}")
+    expect(page).to have_content("Your API Key")
     expect(page).to have_content("Your API key is: 123abc")
   end
 
@@ -66,7 +64,7 @@ RSpec.feature "visitor creates and accesses API Key" do
       click_on "Log In"
     end
 
-    expect(page).to_not have_content("Welcome #{user.email}")
+    expect(page).to_not have_content("Your API Key")
     expect(page).to_not have_content("Your API key is: 123abc")
     expect(page).to have_content("Your email and password combination is not recognized. Please try again.")
   end
@@ -81,12 +79,12 @@ RSpec.feature "visitor creates and accesses API Key" do
       click_on "Log In"
     end
 
-    expect(page).to have_content("Welcome #{user.email}")
+    expect(page).to have_content("Your API Key")
     expect(page).to have_content("Your API key is: 123abc")
 
     click_on "Log Out"
 
-    expect(page).to_not have_content("Welcome #{user.email}")
+    expect(page).to_not have_content("Your API Key")
     expect(page).to_not have_content("Your API key is: 123abc")
     expect(page).to have_content("You have been logged out")
   end

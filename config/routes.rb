@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   mount SwaggerEngine::Engine, at: '/api-docs', as: 'documentation'
 
-  root to: 'welcome#show'
+  root to: 'visualization/demographics#index'
 
   resources :users, only: [:new, :create, :show, :update]
   get '/login',  to: 'sessions#new'

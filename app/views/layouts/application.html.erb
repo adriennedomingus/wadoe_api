@@ -11,10 +11,13 @@
 <div class="header">
   <%= link_to "WA Department of Education API", root_path, class: "logo" %>
   <ul class="navbar-links">
+    <%= link_to "Graphs & Charts", visualization_demographics_path %>
+    <%= link_to "API Documentation", documentation_path %>
     <% if current_user %>
-      <%= link_to "Welcome #{current_user.email}", user_path(current_user) %>
+      <%= link_to "Your API Key", user_path(current_user) %>
       <%= link_to "Log Out", logout_path %>
     <% else %>
+      <%= link_to "Sign Up (Get an API Key)", new_user_path %>
       <%= link_to "Log In", login_path %>
     <% end %>
   </ul>
