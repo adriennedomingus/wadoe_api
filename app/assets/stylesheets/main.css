@@ -3,7 +3,7 @@
 }
 
 .header {
-  background-color: #336699;
+  background-color: #399655;
   height: 50px;
   font-family: sans-serif;
   text-decoration: none;
@@ -37,18 +37,26 @@
 
 .key {
   padding: 75px;
-  border: 1px solid grey;
-  color: grey;
-  border-radius: 10px;
   width: 60%;
   margin: auto;
   margin-top: 125px;
-  background-color: #C2D1E1;
+  line-height: 30px;
   text-align: center;
-  line-height: 50px;
+}
+
+.api-key {
+  color: #399655;
 }
 
 .form-control {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.note {
+  font-size: .8em;
+}
+
+.new-key {
+  margin: 25px;
 }
