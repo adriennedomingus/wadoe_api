@@ -6,7 +6,7 @@ $( document ).ready(function() {
 function getData(districtSlug, schoolYear) {
   $.ajax({
     type: "GET",
-    url: "/api/v1/demographics/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=60e02836a9eadb9fd175c0709dd4715b",
+    url: "/api/v1/demographics/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
     dataType: "json",
     success: function(data) {
       var demData = data.demographics[0]["race ethnicity"];
@@ -16,12 +16,10 @@ function getData(districtSlug, schoolYear) {
   });
 }
 
-// 0220bd8b0679cb75ed9fe67d57089740
-
 function getStateData(schoolYear){
   $.ajax({
     type: "GET",
-    url: "/api/v1/demographics/statewide-in-year?year=" + schoolYear + "&api_key=60e02836a9eadb9fd175c0709dd4715b",
+    url: "/api/v1/demographics/statewide-in-year?year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
     dataType: "json",
     success: function(data) {
       var demData = data.demographics[0]["race ethnicity"];
