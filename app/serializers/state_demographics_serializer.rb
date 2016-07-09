@@ -1,4 +1,4 @@
-class StateSerializer < ActiveModel::Serializer
+class StateDemographicsSerializer < ActiveModel::Serializer
   attributes :demographics
 
   def demographics
