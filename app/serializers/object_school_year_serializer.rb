@@ -48,7 +48,11 @@ module ObjectSchoolYearSerializer
   end
 
   def add_statistics_to_tag(custom_tag, si, tag)
-    five_year_graduation_rate = si.five_year_graduation_rates.where(county_school_year_id: object.id)[0]
+    if object.class == DistrictSchoolYear
+      five_year_graduation_rate = si.five_year_graduation_rates.where(district_school_year_id: object.id)[0]
+    elsif object.class == CountySchoolYear
+      five_year_graduation_rate = si.five_year_graduation_rates.where(county_school_year_id: object.id)[0]
+    end
     if five_year_graduation_rate
       custom_tag[tag.name][si.name] = response_hash(five_year_graduation_rate)
     end
