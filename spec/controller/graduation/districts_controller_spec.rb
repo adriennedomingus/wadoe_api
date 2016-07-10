@@ -9,13 +9,12 @@ RSpec.describe Api::V1::Graduation::DistrictsController, type: :controller do
       get :show, slug: district.slug, year: school_year.years, api_key: user.api_key, format: :json
       district_demographics = JSON.parse(response.body)
 
-
       expect(district_demographics["graduation"]).to be_truthy
-      expect(district_demographics["graduation"][1]["race ethnicity"]["asian"]["transferred_out"]).to be_truthy
-      expect(district_demographics["graduation"][3]["exceptional student services"]).to be_truthy
+      expect(district_demographics["graduation"][0]["race ethnicity"]["asian"]["transferred_out"]).to be_truthy
+      expect(district_demographics["graduation"][1]["exceptional student services"]).to be_truthy
       expect(district_demographics["graduation"][4]["all"]).to be_truthy
       expect(district_demographics["graduation"][2]["other"]).to be_truthy
-      expect(district_demographics["graduation"][0]["gender"]).to be_truthy
+      expect(district_demographics["graduation"][3]["gender"]).to be_truthy
       expect(response.code).to eq("200")
     end
 
