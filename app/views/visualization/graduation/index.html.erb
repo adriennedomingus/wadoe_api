@@ -1,0 +1,19 @@
+<p id="district-dem-instructions" class="well">Choose a district and school year to see its graduation data</p>
+<div class="row">
+  <div class="col-md-3 selections">
+    <div id="drop-down">
+      <%= select("grad-district", "slug", @districts.collect {|d| [ d.name, d.slug ] }, { :include_blank => true }) %>
+    </div>
+    <p class="btn btn-default school-year-button" id="2010-11">2010-11</p>
+    <br />
+    <p class="btn btn-default school-year-button" id="2011-12">2011-12</p>
+    <br />
+    <p class="btn btn-default school-year-button" id="2012-13">2012-13</p>
+    <br />
+    <p class="btn btn-default school-year-button" id="2013-14">2013-14</p>
+    <br />
+  </div>
+  <div class="demographics" class="col-md-9">
+    <div id="state-district-graduation" ></div>
+  </div>
+</div>

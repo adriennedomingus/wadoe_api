@@ -1,8 +1,3 @@
-$( document ).ready(function() {
-  getDistrictAndSchoolYear();
-  getStateData("2013-14");
-});
-
 function getData(districtSlug, schoolYear) {
   $.ajax({
     type: "GET",
