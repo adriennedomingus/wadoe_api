@@ -1,17 +1,34 @@
-function getGradData(districtSlug, schoolYear) {
-  $.ajax({
-    type: "GET",
-    url: "/api/v1/demographics/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
-    dataType: "json",
-    success: function(data) {
-      var demData = data.graduation[0]["race ethnicity"];
-      var chartTitle = data.district.name + ": " + schoolYear;
-      createGraduationHighChart('#district-graduation', demData, chartTitle);
-    }
-  });
+function getGradData(districtSlug, schoolYear, stateGradData) {
+  if (districtSlug) {
+    $.ajax({
+      type: "GET",
+      url: "/api/v1/graduation/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
+      dataType: "json",
+      success: function(data) {
+        var districtGradData = [ parseFloat(data.graduation[0]["race ethnicity"]["american indian or alaskan native"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[0]["race ethnicity"]["asian"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[0]["race ethnicity"]["asian pacific islander"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[0]["race ethnicity"]["black or african american"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[0]["race ethnicity"]["hispanic or latino"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[0]["race ethnicity"]["two or more races"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[0]["race ethnicity"]["white"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[3]["gender"]["female"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[3]["gender"]["male"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[2]["other"]["free or reduced price lunch"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[2]["other"]["transitional bilingual"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[2]["other"]["title i migrant"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[1]["exceptional student services"]["section 504"]["adjusted_five_year_cohort_graduation_rate"]),
+                              parseFloat(data.graduation[1]["exceptional student services"]["special education"]["adjusted_five_year_cohort_graduation_rate"]),
+                            ];
+        createGraduationHighChart(stateGradData, districtGradData);
+      }
+    });
+  } else {
+    createGraduationHighChart(stateGradData, []);
+  }
 }
 
-function getStateGradData(schoolYear){
+function getStateGradData(schoolYear, districtSlug){
   $.ajax({
     type: "GET",
     url: "/api/v1/graduation/statewide-in-year?year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
@@ -22,64 +39,48 @@ function getStateGradData(schoolYear){
                             parseFloat(data.graduation[0]["race ethnicity"]["asian pacific islander"]["percent"]),
                             parseFloat(data.graduation[0]["race ethnicity"]["black or african american"]["percent"]),
                             parseFloat(data.graduation[0]["race ethnicity"]["hispanic or latino"]["percent"]),
-                            parseFloat(data.graduation[0]["race ethnicity"]["pacific islander"]["percent"]),
                             parseFloat(data.graduation[0]["race ethnicity"]["two or more races"]["percent"]),
                             parseFloat(data.graduation[0]["race ethnicity"]["white"]["percent"]),
                             parseFloat(data.graduation[3]["gender"]["female"]["percent"]),
                             parseFloat(data.graduation[3]["gender"]["male"]["percent"]),
-                            parseFloat(data.graduation[2]["other"]["foster care"]["percent"]),
                             parseFloat(data.graduation[2]["other"]["free or reduced price lunch"]["percent"]),
-                            parseFloat(data.graduation[2]["other"]["homeless"]["percent"]),
                             parseFloat(data.graduation[2]["other"]["transitional bilingual"]["percent"]),
                             parseFloat(data.graduation[2]["other"]["title i migrant"]["percent"]),
                             parseFloat(data.graduation[1]["exceptional student services"]["section 504"]["percent"]),
                             parseFloat(data.graduation[1]["exceptional student services"]["special education"]["percent"]),
                           ];
-      createGraduationHighChart(stateGradData, [], "Hi");
+
+      getGradData(districtSlug, schoolYear, stateGradData);
     }
   });
 }
 
 function getDistrictAndSchoolYearGrad(){
-  var districtSlug = 'seattle-public-schools';
+  var districtSlug;
   var schoolYear = '2013-14';
-  $('#district_slug').change(function(){
+  getStateGradData(schoolYear);
+  $('#grad-district_slug').change(function(){
     districtSlug = this.value;
-    getGradData(districtSlug, schoolYear);
-    getStateGradData(schoolYear);
+    getStateGradData(schoolYear, districtSlug);
   });
   $('.school-year-button').click(function(){
     schoolYear = this.id;
-    getGradData(districtSlug, schoolYear);
-    getStateGradData(schoolYear);
+    getStateGradData(schoolYear, districtSlug);
   });
 }
 
-var categories = [
-  'american indian or alaskan native',
-  'asian',
-  'asian pacific islander',
-  'black or african american',
-  'hispanic or latino',
-  'pacific islander',
-  'two or more races',
-  'white',
-  'female',
-  'male',
-  'foster care',
-  'free or reduced price lunch',
-  'homeless',
-  'transitional bilingual',
-  'title i migrant',
-  'section 504',
-  'special education'];
+function createGraduationHighChart(stateGradData, districtGradData, chartTitle){
+  $('#district-graduation').highcharts(
+    graduationChartDetails(stateGradData, districtGradData, chartTitle)
+  );
+}
 
-function graduationChartDetails(stateGradData, districtGradData, chartTitle){
+function graduationChartDetails(stateGradData, districtGradData, chartTitle, schoolYear){
   return {chart: {
             type: 'column'
         },
         title: {
-            text: '5-Year Graduation Rate for State and'
+            text: '5-Year Graduation Rate'
         },
         xAxis: {
             categories: categories,
@@ -110,22 +111,18 @@ function graduationChartDetails(stateGradData, districtGradData, chartTitle){
       };
 }
 
-function createGraduationHighChart(stateGradData, districtGradData, chartTitle){
-  $('#district-graduation').highcharts(
-    graduationChartDetails(stateGradData, districtGradData, chartTitle)
-  );
-}
-
-function formatGraduationChartData(demData){
-  var keys = [];
-  for (var key in demData) {
-    keys.push(key);
-  }
-  var chartData = [];
-  for (var i = 0; i < keys.length; i ++) {
-    var studentIdentifier = keys[i];
-    var dataNumber = demData[keys[i]].number;
-    chartData.push({ name :studentIdentifier, y: dataNumber });
-  }
-  return chartData;
-}
+var categories = [
+  'american indian or alaskan native',
+  'asian',
+  'asian pacific islander',
+  'black or african american',
+  'hispanic or latino',
+  'two or more races',
+  'white',
+  'female',
+  'male',
+  'free or reduced price lunch',
+  'transitional bilingual',
+  'title i migrant',
+  'section 504',
+  'special education'];

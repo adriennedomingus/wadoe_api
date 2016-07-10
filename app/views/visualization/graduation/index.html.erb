@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-md-3 selections">
     <div id="drop-down">
-      <%= select("district", "slug", @districts.collect {|d| [ d.name, d.slug ] }, { :include_blank => true }) %>
+      <%= select("grad-district", "slug", @districts.collect {|d| [ d.name, d.slug ] }, { :include_blank => true }) %>
     </div>
     <p class="btn btn-default school-year-button" id="2010-11">2010-11</p>
     <br />
