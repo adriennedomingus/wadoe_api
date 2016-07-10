@@ -1,4 +1,4 @@
-SchoolYear,Dist,District,Beginning Grade 9 Students,Transferred In,Dropouts Year 1,Dropouts Year 2,Dropouts Year 3,Dropouts Year 4,Dropouts Year 5,Transferred Out,Adjusted Cohort,Graduates,Continuing,Adjusted Actual 5-Year Cohort Graduation Rate,Cohort dropout rate,Continuing Rate
+SchoolYear,Dist,District,Beginning Grade 9 Students,Transferred In,Dropouts Year 1,Dropouts Year 2,Dropouts Year 3,Dropouts Year 4,Dropouts Year 5,Transferred Out,Adjusted Cohort,Graduates,ContinuingAdjusted 5-Year Cohort Graduation Rate,Cohort dropout rate,Continuing Rate
 2010-11,14005,Aberdeen,169,56,2,3,10,12,23,82,143,85,8,59.4,35.0,5.6
 2010-11,21226,Adna,31,16,1,0,0,0,0,21,26,25,0,96.2,3.8,0.0
 2010-11,29103,Anacortes,129,31,1,0,5,14,6,52,108,77,5,71.3,24.1,4.6

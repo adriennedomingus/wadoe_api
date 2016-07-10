@@ -86,7 +86,7 @@ namespace :db do
                        year_4: row["Dropouts Year 4"].to_i,
                        year_5: row["Dropouts Year 5"].to_i,
         )
-        district = District.find_by(number: row["Dist"].to_i)
+        district = District.find_by(number: row["Dist"])
         school_year = SchoolYear.find_or_create_by(years: row["SchoolYear"])
         if district
           district_school_year = DistrictSchoolYear.find_or_create_by(district_id: district.id, school_year_id: school_year.id)

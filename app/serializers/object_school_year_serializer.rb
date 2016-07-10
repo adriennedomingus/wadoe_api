@@ -37,7 +37,7 @@ module ObjectSchoolYearSerializer
 
   def all_tags_response
     all_tags = []
-    object.tags.each do |tag|
+    Tag.all.each do |tag|
       custom_tag = {tag.name => {}}
       tag.student_identifiers.each do |si|
         add_statistics_to_tag(custom_tag, si, tag)
