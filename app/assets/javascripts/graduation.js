@@ -5,21 +5,7 @@ function getGradData(districtSlug, schoolYear, stateGradData) {
       url: "/api/v1/graduation/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
       dataType: "json",
       success: function(data) {
-        var districtGradData = [ parseFloat(data.graduation[0]["race ethnicity"]["american indian or alaskan native"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[0]["race ethnicity"]["asian"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[0]["race ethnicity"]["asian pacific islander"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[0]["race ethnicity"]["black or african american"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[0]["race ethnicity"]["hispanic or latino"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[0]["race ethnicity"]["two or more races"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[0]["race ethnicity"]["white"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[3]["gender"]["female"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[3]["gender"]["male"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[2]["other"]["free or reduced price lunch"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[2]["other"]["transitional bilingual"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[2]["other"]["title i migrant"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[1]["exceptional student services"]["section 504"]["adjusted_five_year_cohort_graduation_rate"]),
-                              parseFloat(data.graduation[1]["exceptional student services"]["special education"]["adjusted_five_year_cohort_graduation_rate"]),
-                            ];
+        var districtGradData = getPercentagePoints(data, "adjusted_five_year_cohort_graduation_rate");
         createGraduationHighChart(stateGradData, districtGradData, schoolYear);
       }
     });
@@ -34,22 +20,7 @@ function getStateGradData(schoolYear, districtSlug){
     url: "/api/v1/graduation/statewide-in-year?year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
     dataType: "json",
     success: function(data) {
-      var stateGradData = [ parseFloat(data.graduation[0]["race ethnicity"]["american indian or alaskan native"]["percent"]),
-                            parseFloat(data.graduation[0]["race ethnicity"]["asian"]["percent"]),
-                            parseFloat(data.graduation[0]["race ethnicity"]["asian pacific islander"]["percent"]),
-                            parseFloat(data.graduation[0]["race ethnicity"]["black or african american"]["percent"]),
-                            parseFloat(data.graduation[0]["race ethnicity"]["hispanic or latino"]["percent"]),
-                            parseFloat(data.graduation[0]["race ethnicity"]["two or more races"]["percent"]),
-                            parseFloat(data.graduation[0]["race ethnicity"]["white"]["percent"]),
-                            parseFloat(data.graduation[3]["gender"]["female"]["percent"]),
-                            parseFloat(data.graduation[3]["gender"]["male"]["percent"]),
-                            parseFloat(data.graduation[2]["other"]["free or reduced price lunch"]["percent"]),
-                            parseFloat(data.graduation[2]["other"]["transitional bilingual"]["percent"]),
-                            parseFloat(data.graduation[2]["other"]["title i migrant"]["percent"]),
-                            parseFloat(data.graduation[1]["exceptional student services"]["section 504"]["percent"]),
-                            parseFloat(data.graduation[1]["exceptional student services"]["special education"]["percent"]),
-                          ];
-
+      var stateGradData = getPercentagePoints(data, "percent");
       getGradData(districtSlug, schoolYear, stateGradData);
     }
   });
@@ -109,6 +80,24 @@ function graduationChartDetails(stateGradData, districtGradData, schoolYear){
 
         }]
       };
+}
+
+function getPercentagePoints(data, subCategory){
+  return [ parseFloat(data.graduation[0]["race ethnicity"]["american indian or alaskan native"][subCategory]),
+                        parseFloat(data.graduation[0]["race ethnicity"]["asian"][subCategory]),
+                        parseFloat(data.graduation[0]["race ethnicity"]["asian pacific islander"][subCategory]),
+                        parseFloat(data.graduation[0]["race ethnicity"]["black or african american"][subCategory]),
+                        parseFloat(data.graduation[0]["race ethnicity"]["hispanic or latino"][subCategory]),
+                        parseFloat(data.graduation[0]["race ethnicity"]["two or more races"][subCategory]),
+                        parseFloat(data.graduation[0]["race ethnicity"]["white"][subCategory]),
+                        parseFloat(data.graduation[3]["gender"]["female"][subCategory]),
+                        parseFloat(data.graduation[3]["gender"]["male"][subCategory]),
+                        parseFloat(data.graduation[2]["other"]["free or reduced price lunch"][subCategory]),
+                        parseFloat(data.graduation[2]["other"]["transitional bilingual"][subCategory]),
+                        parseFloat(data.graduation[2]["other"]["title i migrant"][subCategory]),
+                        parseFloat(data.graduation[1]["exceptional student services"]["section 504"][subCategory]),
+                        parseFloat(data.graduation[1]["exceptional student services"]["special education"][subCategory]),
+                      ]
 }
 
 var categories = [
