@@ -4,7 +4,6 @@ function getGradData(districtSlug, schoolYear) {
     url: "/api/v1/demographics/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
     dataType: "json",
     success: function(data) {
-      debugger
       var demData = data.graduation[0]["race ethnicity"];
       var chartTitle = data.district.name + ": " + schoolYear;
       createGraduationHighChart('#district-graduation', demData, chartTitle);
@@ -18,7 +17,6 @@ function getStateGradData(schoolYear){
     url: "/api/v1/graduation/statewide-in-year?year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
     dataType: "json",
     success: function(data) {
-      // debugger
       var stateGradData = [ parseFloat(data.graduation[0]["race ethnicity"]["american indian or alaskan native"]["percent"]),
                             parseFloat(data.graduation[0]["race ethnicity"]["asian"]["percent"]),
                             parseFloat(data.graduation[0]["race ethnicity"]["asian pacific islander"]["percent"]),
@@ -37,8 +35,7 @@ function getStateGradData(schoolYear){
                             parseFloat(data.graduation[1]["exceptional student services"]["section 504"]["percent"]),
                             parseFloat(data.graduation[1]["exceptional student services"]["special education"]["percent"]),
                           ];
-      // var chartTitle = "State Averages: " + schoolYear;
-      // createGraduationHighChart('#state-graduation', demData, chartTitle);
+      createGraduationHighChart(stateGradData, [], "Hi");
     }
   });
 }
@@ -77,8 +74,7 @@ var categories = [
   'section 504',
   'special education'];
 
-function graduationChartDetails(demData, chartTitle){
-  var chartData = formatChartData(demData);
+function graduationChartDetails(stateGradData, districtGradData, chartTitle){
   return {chart: {
             type: 'column'
         },
@@ -104,19 +100,19 @@ function graduationChartDetails(demData, chartTitle){
         },
         series: [{
             name: 'District',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4, 34, 35, 65, 7, 65]
+            data: districtGradData
 
         }, {
             name: 'State',
-            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3, 34, 35, 65, 7, 65]
+            data: stateGradData
 
         }]
       };
 }
 
-function createGraduationHighChart(divName, demData, chartTitle){
-  $(divName).highcharts(
-    graduationChartDetails(demData, chartTitle)
+function createGraduationHighChart(stateGradData, districtGradData, chartTitle){
+  $('#district-graduation').highcharts(
+    graduationChartDetails(stateGradData, districtGradData, chartTitle)
   );
 }
 
