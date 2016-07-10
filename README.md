@@ -43,7 +43,7 @@ The production app can be found [here](https://wadoe-api.herokuapp.com/) - this 
 1. Clone down the repository
 2. From the project directory:
   * `bundle`
-  * `rake db:create db:migrate db:import_demographic_data db:import_graduation_data db:import_county_graduation_data`
+  * `rake db:create db:migrate db:create_tags_and_identifiers db:import_demographic_data db:import_graduation_data db:import_county_graduation_data`
 
 ### Testing
 
