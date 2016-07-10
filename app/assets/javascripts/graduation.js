@@ -20,11 +20,11 @@ function getGradData(districtSlug, schoolYear, stateGradData) {
                               parseFloat(data.graduation[1]["exceptional student services"]["section 504"]["adjusted_five_year_cohort_graduation_rate"]),
                               parseFloat(data.graduation[1]["exceptional student services"]["special education"]["adjusted_five_year_cohort_graduation_rate"]),
                             ];
-        createGraduationHighChart(stateGradData, districtGradData);
+        createGraduationHighChart(stateGradData, districtGradData, schoolYear);
       }
     });
   } else {
-    createGraduationHighChart(stateGradData, []);
+    createGraduationHighChart(stateGradData, [], schoolYear);
   }
 }
 
@@ -69,18 +69,18 @@ function getDistrictAndSchoolYearGrad(){
   });
 }
 
-function createGraduationHighChart(stateGradData, districtGradData, chartTitle){
-  $('#district-graduation').highcharts(
-    graduationChartDetails(stateGradData, districtGradData, chartTitle)
+function createGraduationHighChart(stateGradData, districtGradData, schoolYear){
+  $('#state-district-graduation').highcharts(
+    graduationChartDetails(stateGradData, districtGradData, schoolYear)
   );
 }
 
-function graduationChartDetails(stateGradData, districtGradData, chartTitle, schoolYear){
+function graduationChartDetails(stateGradData, districtGradData, schoolYear){
   return {chart: {
             type: 'column'
         },
         title: {
-            text: '5-Year Graduation Rate'
+            text: '5-Year Graduation Rate: ' + schoolYear
         },
         xAxis: {
             categories: categories,
