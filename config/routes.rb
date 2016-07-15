@@ -1,15 +1,16 @@
 Rails.application.routes.draw do
   mount SwaggerEngine::Engine, at: '/api-docs', as: 'documentation'
 
-  root to: 'visualization/demographics#index'
+  root to: 'visualization#show'
 
   resources :users, only: [:new, :create, :show, :update]
   get '/login',  to: 'sessions#new'
   post '/login', to: 'sessions#create'
   get '/logout', to: 'sessions#destroy'
 
-  get 'visualization/demographics', to: 'visualization/demographics#index'
-  get 'visualization/graduation', to: 'visualization/graduation#index'
+  get 'visualization/demographics',          to: 'visualization/demographics#index'
+  get 'visualization/graduation',            to: 'visualization/graduation#index'
+  get 'visualization',                       to: 'visualization#show'
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
