@@ -60,3 +60,37 @@
 .new-key {
   margin: 25px;
 }
+
+h2 {
+  font-size: 3em;
+}
+
+.centered {
+  text-align: center;
+}
+
+.title {
+  font-size: 2em;
+  padding: 15px;
+}
+
+.subtitle {
+  font-size: 1.4em;
+  padding: 10px;
+}
+
+.btn {
+  margin: 10px;
+}
+
+.data-links {
+  margin-top: 20px;
+}
+
+.data-well {
+  line-height: 30px;
+}
+
+/*.well {
+  background-color: #a8dbb7;
+}*/
