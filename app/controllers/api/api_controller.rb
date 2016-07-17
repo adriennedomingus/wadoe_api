@@ -22,6 +22,17 @@ class Api::ApiController < ApplicationController
     { message: message, status: 401 }.to_json
   end
 
+  def index_response(params, type, serializer)
+    key = params[:api_key]
+    if authenticated_api_key?(key)
+      counties = type.all
+      counties_per_page = params[:per_page] || 25
+      paginate json: counties, per_page: counties_per_page, each_serializer: serializer
+    else
+      respond_with unauthorized_response, status: 401, head: :unauthorized
+    end
+  end
+
   private
 
     def response_path(object, serializer, params)
