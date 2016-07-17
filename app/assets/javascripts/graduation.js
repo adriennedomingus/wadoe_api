@@ -1,13 +1,8 @@
 function getGradData(districtSlug, schoolYear, stateGradData) {
   if (districtSlug) {
-    $.ajax({
-      type: "GET",
-      url: "/api/v1/graduation/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
-      dataType: "json",
-      success: function(data) {
-        var districtGradData = getPercentagePoints(data, "adjusted_five_year_cohort_graduation_rate");
-        createGraduationHighChart(stateGradData, districtGradData, schoolYear);
-      }
+    $.getJSON("/api/v1/graduation/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740", function(data) {
+      var districtGradData = getPercentagePoints(data, "adjusted_five_year_cohort_graduation_rate");
+      createGraduationHighChart(stateGradData, districtGradData, schoolYear);
     });
   } else {
     createGraduationHighChart(stateGradData, [], schoolYear);
@@ -15,14 +10,9 @@ function getGradData(districtSlug, schoolYear, stateGradData) {
 }
 
 function getStateGradData(schoolYear, districtSlug){
-  $.ajax({
-    type: "GET",
-    url: "/api/v1/graduation/statewide-in-year?year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
-    dataType: "json",
-    success: function(data) {
-      var stateGradData = getPercentagePoints(data, "percent");
-      getGradData(districtSlug, schoolYear, stateGradData);
-    }
+  $.getJSON("/api/v1/graduation/statewide-in-year?year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740", function(data) {
+    var stateGradData = getPercentagePoints(data, "percent");
+    getGradData(districtSlug, schoolYear, stateGradData);
   });
 }
 

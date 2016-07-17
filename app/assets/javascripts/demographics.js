@@ -1,26 +1,16 @@
 function getData(districtSlug, schoolYear) {
-  $.ajax({
-    type: "GET",
-    url: "/api/v1/demographics/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
-    dataType: "json",
-    success: function(data) {
-      var demData = data.demographics[0]["race ethnicity"];
-      var chartTitle = data.district.name + ": " + schoolYear;
-      createHighChart('#district-demographics', demData, chartTitle);
-    }
+  $.getJSON( "/api/v1/demographics/district-in-year?slug=" + districtSlug + "&year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740", function(data) {
+    var demData = data.demographics[0]["race ethnicity"];
+    var chartTitle = data.district.name + ": " + schoolYear;
+    createHighChart('#district-demographics', demData, chartTitle);
   });
 }
 
 function getStateData(schoolYear){
-  $.ajax({
-    type: "GET",
-    url: "/api/v1/demographics/statewide-in-year?year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740",
-    dataType: "json",
-    success: function(data) {
-      var demData = data.demographics[0]["race ethnicity"];
-      var chartTitle = "State Averages: " + schoolYear;
-      createHighChart('#state-demographics', demData, chartTitle);
-    }
+  $.getJSON("/api/v1/demographics/statewide-in-year?year=" + schoolYear + "&api_key=0220bd8b0679cb75ed9fe67d57089740", function(data) {
+    var demData = data.demographics[0]["race ethnicity"];
+    var chartTitle = "State Averages: " + schoolYear;
+    createHighChart('#state-demographics', demData, chartTitle);
   });
 }
 
