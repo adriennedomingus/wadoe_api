@@ -316,6 +316,68 @@ module SpecHelpers
     [school_year, county, educational_service_district, district, student_enrollment, district_school_year]
   end
 
+  def create_graduation_rates_for_multiple_districts
+    create_tags_and_identifiers
+    school_year = SchoolYear.create(years: "2015-16")
+    school_year2 = SchoolYear.create(years: "2014-15")
+    county = County.create(name: "King", number: "17", slug: "king")
+    educational_service_district = EducationalServiceDistrict.create(name: "Puget Sound Educational Service District 121", slug: "puget-sound-educational-service-district-121")
+    student_enrollment = StudentEnrollment.create(total: 1378, students_per_classroom_teacher: 18)
+    dropout = Dropout.create(year_1: 34,
+                   year_2: 13,
+                   year_3: 60,
+                   year_4: 8)
+
+    district4 = District.create(name: "Lake Washington School District", number: "17403", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "lake-washington-school-district")
+    district_school_year4 = DistrictSchoolYear.create(district_id: district4.id, school_year_id: school_year.id, student_enrollment_id: student_enrollment.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 60,
+                               cohort_dropout_rate: 40,
+                               student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                               district_school_year_id: district_school_year4.id,
+                               dropout_id: dropout.id)
+
+    district = District.create(name: "Auburn School District", number: "17408", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "auburn-school-district")
+    district_school_year2 = DistrictSchoolYear.create(district_id: district.id, school_year_id: school_year2.id, student_enrollment_id: student_enrollment.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 10,
+                                cohort_dropout_rate: 90,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                                district_school_year_id: district_school_year2.id,
+                                dropout_id: dropout.id)
+
+    district_school_year = DistrictSchoolYear.create(district_id: district.id, school_year_id: school_year.id, student_enrollment_id: student_enrollment.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 90,
+                                cohort_dropout_rate: 10,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                                district_school_year_id: district_school_year.id,
+                                dropout_id: dropout.id)
+
+    district2 = District.create(name: "Issaquah School District", number: "17411", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "issaquah-school-district")
+    district_school_year2 = DistrictSchoolYear.create(district_id: district2.id, school_year_id: school_year.id, student_enrollment_id: student_enrollment.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 80,
+                                cohort_dropout_rate: 20,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                                district_school_year_id: district_school_year2.id,
+                                dropout_id: dropout.id)
+
+    district3 = District.create(name: "Aberdeen School District", number: "17402", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "aberdeen-school-district")
+    district_school_year3 = DistrictSchoolYear.create(district_id: district3.id, school_year_id: school_year.id, student_enrollment_id: student_enrollment.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 70,
+                                cohort_dropout_rate: 30,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                                district_school_year_id: district_school_year3.id,
+                                dropout_id: dropout.id)
+
+    district5 = District.create(name: "Adna School District", number: "21226", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "adna-school-district")
+    district_school_year5 = DistrictSchoolYear.create(district_id: district5.id, school_year_id: school_year.id, student_enrollment_id: student_enrollment.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 50,
+                                cohort_dropout_rate: 50,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                                district_school_year_id: district_school_year5.id,
+                                dropout_id: dropout.id)
+
+    [school_year, district, district2, district3, district4, district5]
+  end
+
   def create_tags_and_identifiers
     tags = ['race ethnicity', 'exceptional student services', 'other', 'gender', 'all']
 

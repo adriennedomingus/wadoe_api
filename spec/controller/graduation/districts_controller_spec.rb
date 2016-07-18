@@ -87,5 +87,18 @@ RSpec.describe Api::V1::Graduation::DistrictsController, type: :controller do
       expect(response.code).to eq("401")
       expect(expected_response).to eq(response.body)
     end
+
+    it "responds with x districts with highest cohort graduation rates" do
+      school_year, district, district2, district3 = create_graduation_rates_for_multiple_districts
+
+      get :highest, identifier: 'female', year: school_year.years, top: 3, format: :json
+
+      top_graduation_rates = JSON.parse(response.body)
+
+      expect(top_graduation_rates.length).to eq(3)
+      expect(top_graduation_rates[0]["district"]["name"]).to eq(district.name)
+      expect(top_graduation_rates[1]["district"]["name"]).to eq(district2.name)
+      expect(top_graduation_rates[2]["district"]["name"]).to eq(district3.name)
+    end
   end
 end
