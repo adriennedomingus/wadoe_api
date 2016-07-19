@@ -131,8 +131,32 @@ RSpec.describe Api::V1::Graduation::DistrictsController, type: :controller do
       expect(top_graduation_rates[2]["graduation"][0]["all"]).to be_truthy
     end
 
-    #invalid school year
-    #top defaults to 10 if not provided
+    it "respoonds with an error if the school year doesn't exist" do
+      User.create(email: "example@example.com", password: "password", api_key: "abc123")
+      create_graduation_rates_for_multiple_districts
+
+      get :highest, year: "2010-11", top: 3, api_key: 'abc123', format: :json
+
+      expected_response = {
+        message: "We do not have data for that school year. Please try another query.",
+        status: 404
+      }.to_json
+
+      expect(response.body).to eq(expected_response)
+      expect(response.code).to eq("404")
+    end
+
+    it "defaults to top ten if number is not provided" do
+      school_year, _ = create_graduation_rates_for_multiple_districts
+      User.create(email: "example@example.com", password: "password", api_key: "abc123")
+
+      get :highest, identifier: 'female', year: school_year.years, api_key: 'abc123', format: :json
+
+      top_graduation_rates = JSON.parse(response.body)
+      #test data currently only contains 5 districts. Returns 10 in dev
+      expect(top_graduation_rates.length).to eq(5)
+    end
+
     #ties
   end
 end

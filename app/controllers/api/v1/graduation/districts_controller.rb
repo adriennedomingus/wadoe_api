@@ -8,9 +8,13 @@ class Api::V1::Graduation::DistrictsController < Api::ApiController
 
   def highest
     identifier = set_identifier(params)
-    if User.find_by(api_key: params[:api_key])
-      school_year = SchoolYear.find_by(years: params[:year])
-      number = params[:top]
+    number = set_top(params)
+    school_year = SchoolYear.find_by(years: params[:year])
+    if !school_year
+      message = "We do not have data for that school year. Please try another query."
+      response = { message: message, status: 404 }.to_json
+      respond_with response, {status: 404}
+    elsif User.find_by(api_key: params[:api_key])
       district_school_years = DistrictSchoolYear.joins(:five_year_graduation_rates)
                           .where(district_school_years: { school_year_id: school_year.id })
                           .order('five_year_graduation_rates.adjusted_five_year_cohort_graduation_rate DESC')
@@ -28,6 +32,14 @@ class Api::V1::Graduation::DistrictsController < Api::ApiController
         params[:identifier]
       else
         "all"
+      end
+    end
+
+    def set_top(params)
+      if params[:top]
+        params[:top]
+      else
+        10
       end
     end
 end
