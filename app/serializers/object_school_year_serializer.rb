@@ -40,7 +40,7 @@ module ObjectSchoolYearSerializer
 
   def specific_identifier_response(identifier)
     { identifier.name =>
-      identifier.five_year_graduation_rates.where(district_school_year_id: object.id)[0]
+      response_hash(identifier.five_year_graduation_rates.where(district_school_year_id: object.id)[0])
     }
   end
 
