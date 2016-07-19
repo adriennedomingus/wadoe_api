@@ -156,7 +156,5 @@ RSpec.describe Api::V1::Graduation::DistrictsController, type: :controller do
       #test data currently only contains 5 districts. Returns 10 in dev
       expect(top_graduation_rates.length).to eq(5)
     end
-
-    #ties
   end
 end
