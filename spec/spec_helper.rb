@@ -338,8 +338,8 @@ module SpecHelpers
 
     district = District.create(name: "Auburn School District", number: "17408", educational_service_district_id: educational_service_district.id, county_id: county.id, slug: "auburn-school-district")
     district_school_year2 = DistrictSchoolYear.create(district_id: district.id, school_year_id: school_year2.id, student_enrollment_id: student_enrollment.id)
-    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 10,
-                                cohort_dropout_rate: 90,
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 15,
+                                cohort_dropout_rate: 85,
                                 student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
                                 district_school_year_id: district_school_year2.id,
                                 dropout_id: dropout.id)
