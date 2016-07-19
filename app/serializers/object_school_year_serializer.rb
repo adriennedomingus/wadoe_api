@@ -1,8 +1,11 @@
 module ObjectSchoolYearSerializer
   def graduation
     tag_from_params = Tag.find_by(name: scope)
+    identifier_from_params = StudentIdentifier.find_by(name: scope)
     if tag_from_params
       specific_tag_response(tag_from_params)
+    elsif identifier_from_params
+      specific_identifier_response(identifier_from_params)
     else
       all_tags_response
     end
@@ -33,6 +36,12 @@ module ObjectSchoolYearSerializer
       add_statistics_to_tag(custom_tag, si, tag_from_params)
     end
     [custom_tag]
+  end
+
+  def specific_identifier_response(identifier)
+    { identifier.name =>
+      identifier.five_year_graduation_rates.where(district_school_year_id: object.id)[0]
+    }
   end
 
   def all_tags_response

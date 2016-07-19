@@ -374,6 +374,91 @@
                 }
             }
         },
+        "/graduation/district-highest-rate": {
+            "get": {
+                "summary": "Districts with the highest Adjusted 5-Year Cohort Graduation Rate for specified School Year",
+                "description": "This endpoint returns the graduation data for the top n districts (based on their adjusted 5-year cohort graduation rate for the specified student identifier.  Ties are not currently handeled, but will be soon.",
+                "parameters": [
+                    {
+                        "name": "year",
+                        "in": "query",
+                        "description": "requested school year. Must be in the format xxxx-xx (ie 2012-13)",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "api_key",
+                        "in": "query",
+                        "description": "your individual api key",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "identifier",
+                        "in": "query",
+                        "description": "name of tag you would like response to be scoped by. Options are - 'all', 'american indian or alaskan native', 'asian', 'asian pacific islander', 'black or african american', 'hispanic or latino', 'pacific islander', 'two or more races', 'white', 'section 504', 'special education', 'foster care', 'free or reduced price lunch', 'transitional bilingual', 'title i migrant', 'female', 'male'. Limit 1. Defaults to 'all' if one is not provided",
+                        "required": false,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "top",
+                        "in": "query",
+                        "description": "Number of districts you would like returned. Defaults to 10 if one is not provided",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "tags": [
+                    "Districts",
+                    "Graduation"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful response",
+                        "schema": {
+                            "$ref": "#/definitions/TopDistrictGraduation"
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "description": "contains error message and status code",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "unauthorized error"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "401 status code"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Data does not exist for the specified school year.",
+                        "schema": {
+                            "type": "object",
+                            "description": "contains error message and status code",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "specific error"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "404 status code"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/graduation/county-in-year": {
             "get": {
                 "summary": "Five year graduation rates for the specified county and year",
@@ -2441,6 +2526,140 @@
                         "students_per_classroom_teacher": {
                             "type": "integer",
                             "description": "Average number of students per classroom teacher"
+                        }
+                    }
+                }
+            }
+        },
+        "TopDistrictGraduation": {
+            "type": "array",
+            "description": "list of top n districts with highest rates",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "graduation": {
+                        "type": "array",
+                        "description": "Student graduation statistics for specified student identifier",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "identifier": {
+                                    "type": "object",
+                                    "description": "Graduation statistics for specified student identifier",
+                                    "properties": {
+                                        "all": {
+                                            "type": "object",
+                                            "description": "Graduation statistics for specified student identifier",
+                                            "properties": {
+                                                "began_9_in_wa": {
+                                                    "type": "integer",
+                                                    "description": "number of students who began 9th grade in Washington"
+                                                },
+                                                "transferred_into_wa": {
+                                                    "type": "integer",
+                                                    "description": "number of students who transferred into Washington"
+                                                },
+                                                "transferred_out": {
+                                                    "type": "integer",
+                                                    "description": "number of students who transferred out of Washington"
+                                                },
+                                                "adjusted_cohort": {
+                                                    "type": "integer",
+                                                    "description": "number of students after accounting for transfers"
+                                                },
+                                                "graduates": {
+                                                    "type": "integer",
+                                                    "description": "number of students who graduated"
+                                                },
+                                                "continuing": {
+                                                    "type": "integer",
+                                                    "description": "number of students continuing to pursue graduation"
+                                                },
+                                                "adjusted_five_year_cohort_graduation_rate": {
+                                                    "type": "integer",
+                                                    "description": "percent of students who graduated after accounting for transfers"
+                                                },
+                                                "cohort_dropout_rate": {
+                                                    "type": "integer",
+                                                    "description": "Percent of students who dropped out"
+                                                },
+                                                "continuing_rate": {
+                                                    "type": "integer",
+                                                    "description": "Percent of students who are continuing to pursue graduation"
+                                                },
+                                                "dropouts": {
+                                                    "type": "object",
+                                                    "description": "Number of students who dropped out in each year",
+                                                    "properties": {
+                                                        "year1": {
+                                                            "type": "integer",
+                                                            "description": "number of students who dropped out in year1"
+                                                        },
+                                                        "year2": {
+                                                            "type": "integer",
+                                                            "description": "number of students who dropped out in year2"
+                                                        },
+                                                        "year3": {
+                                                            "type": "integer",
+                                                            "description": "number of students who dropped out in year3"
+                                                        },
+                                                        "year4": {
+                                                            "type": "integer",
+                                                            "description": "number of students who dropped out in year4"
+                                                        },
+                                                        "year5": {
+                                                            "type": "integer",
+                                                            "description": "number of students who dropped out in year5"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "district": {
+                        "type": "object",
+                        "description": "basic information about the requested district",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Name of the school district"
+                            },
+                            "number": {
+                                "type": "string",
+                                "description": "School district number"
+                            },
+                            "slug": {
+                                "type": "string",
+                                "description": "parameterized name of the school district, to be used in queries for this district"
+                            }
+                        }
+                    },
+                    "school_year": {
+                        "type": "object",
+                        "description": "school year requested",
+                        "properties": {
+                            "years": {
+                                "type": "string",
+                                "description": "School year requested"
+                            }
+                        }
+                    },
+                    "student_enrollment": {
+                        "type": "object",
+                        "description": "general student enrollment numbers for the district",
+                        "properties": {
+                            "total": {
+                                "type": "integer",
+                                "description": "total number of students enrolled in district"
+                            },
+                            "students_per_classroom_teacher": {
+                                "type": "integer",
+                                "description": "Average number of students per classroom teacher"
+                            }
                         }
                     }
                 }
