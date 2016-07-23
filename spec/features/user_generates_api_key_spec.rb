@@ -3,7 +3,9 @@ require "rails_helper"
 RSpec.feature "visitor creates and accesses API Key" do
   scenario "new user generates key" do
     visit '/'
-    click_on "Sign Up (Get an API Key)"
+    within(".navbar-links") do
+      click_on "Sign Up (Get an API Key)"
+    end
 
     fill_in :user_email,                 with: "adrienne.domingus@gmail.com"
     fill_in :user_password,              with: "password"
@@ -22,7 +24,9 @@ RSpec.feature "visitor creates and accesses API Key" do
 
     expect(page).to have_content("Your API key is:")
 
-    click_on "Your API Key"
+    within(".navbar-links") do
+      click_on "Your API Key"
+    end
 
     expect(page).to have_content("Your API key is:")
     expect(page).to have_content("Your API Key")
@@ -30,7 +34,9 @@ RSpec.feature "visitor creates and accesses API Key" do
 
   scenario "new user password confirmation does not match" do
     visit '/'
-    click_on "Sign Up (Get an API Key)"
+    within(".navbar-links") do
+      click_on "Sign Up (Get an API Key)"
+    end
 
     fill_in :user_email,                 with: "adrienne.domingus@gmail.com"
     fill_in :user_password,              with: "password"
@@ -82,7 +88,9 @@ RSpec.feature "visitor creates and accesses API Key" do
     expect(page).to have_content("Your API Key")
     expect(page).to have_content("Your API key is: 123abc")
 
-    click_on "Log Out"
+    within(".navbar-links") do
+      click_on "Log Out"
+    end
 
     expect(page).to_not have_content("Your API Key")
     expect(page).to_not have_content("Your API key is: 123abc")

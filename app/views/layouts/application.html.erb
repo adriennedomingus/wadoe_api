@@ -21,8 +21,25 @@
       <%= link_to "Log In", login_path %>
     <% end %>
   </ul>
+  <div class="collapsed-navbar">
+    <div class="menu-icon">
+      <div class="horizontal-line"></div>
+      <div class="horizontal-line"></div>
+      <div class="horizontal-line"></div>
+    </div>
+    <ul class="dropdown-links hidden">
+      <li class="dropdown-link"><%= link_to "Graphs & Charts", visualization_path %></li>
+      <li class="dropdown-link"><%= link_to "API Documentation", documentation_path %></li>
+      <% if current_user %>
+        <li class="dropdown-link"><%= link_to "Your API Key", user_path(current_user) %></li>
+        <li class="dropdown-link"><%= link_to "Log Out", logout_path %></li>
+      <% else %>
+        <li class="dropdown-link"><%= link_to "Sign Up (Get an API Key)", new_user_path %></li>
+        <li class="dropdown-link"><%= link_to "Log In", login_path %></li>
+      <% end %>
+    </ul>
+  </div>
 </div>
-
 <% flash.each do |type, message| %>
   <div class="<%= type %>">
     <%= message %>
