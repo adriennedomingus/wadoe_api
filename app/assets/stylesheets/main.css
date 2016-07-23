@@ -2,6 +2,10 @@
   font-family: sans-serif;
 }
 
+.hidden {
+  display: none;
+}
+
 .header {
   background-color: #399655;
   height: 50px;
@@ -89,4 +93,61 @@ h2 {
 
 .data-well {
   line-height: 30px;
+}
+
+.collapsed-navbar {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .navbar-links {
+    display: none;
+  }
+
+  .collapsed-navbar {
+    display: block;
+  }
+
+  .collapse-button {
+    float: right;
+  }
+
+  .menu-icon {
+    float: right;
+    margin-right: 25px;
+    margin-top: 10px;
+  }
+
+  .horizontal-line {
+    width: 35px;
+    height: 3px;
+    background-color: white;
+    margin-top: 5px;
+  }
+
+  .dropdown-links {
+    margin-top: 50px;
+    text-align: right;
+    margin-right: -58px;
+    border: 1px solid black;
+    padding: 25px;
+    border-radius: 5px;
+    position: absolute;
+    right: 60px;
+    background-color: #eae5e5;
+  }
+
+  .dropdown-link > a {
+    margin-top: 8px;
+    text-decoration: none;
+    color: black;
+  }
+
+  .dropdown-link {
+    margin-top: 10px;
+  }
+
+  .dropdown-link > a:hover {
+    color: grey;
+  }
 }
