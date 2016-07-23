@@ -135,6 +135,7 @@ h2 {
     position: absolute;
     right: 60px;
     background-color: #eae5e5;
+    z-index: 100;
   }
 
   .dropdown-link > a {
