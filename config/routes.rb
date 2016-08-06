@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       get '/demographics/statewide-in-year',      to: 'demographics/state#show'
       get '/graduation/district-in-year',         to: 'graduation/districts#show'
       get '/graduation/district-highest-rate',    to: 'graduation/districts#highest'
+      get '/graduation/county-highest-rate',      to: 'graduation/counties#highest'
       get '/graduation/county-in-year',           to: 'graduation/counties#show'
       get '/graduation/statewide-in-year',        to: 'graduation/state#show'
 

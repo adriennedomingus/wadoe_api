@@ -39,9 +39,11 @@ module ObjectSchoolYearSerializer
   end
 
   def specific_identifier_response(identifier)
-    { identifier.name =>
-      response_hash(identifier.five_year_graduation_rates.where(district_school_year_id: object.id)[0])
-    }
+    if object.class == DistrictSchoolYear
+      { identifier.name => response_hash(identifier.five_year_graduation_rates.where(district_school_year_id: object.id)[0])}
+    elsif object.class == CountySchoolYear
+      { identifier.name => response_hash(identifier.five_year_graduation_rates.where(county_school_year_id: object.id)[0])}
+    end
   end
 
   def all_tags_response

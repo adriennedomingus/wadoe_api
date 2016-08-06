@@ -403,6 +403,90 @@ module SpecHelpers
     [school_year, district, district2, district3, district4, district5]
   end
 
+  def create_graduation_rates_for_multiple_counties
+    create_tags_and_identifiers
+    school_year = SchoolYear.create(years: "2015-16")
+    school_year2 = SchoolYear.create(years: "2014-15")
+    dropout = Dropout.create(year_1: 34,
+                   year_2: 13,
+                   year_3: 60,
+                   year_4: 8)
+
+    county = County.create(name: "King County", number: "17408", slug: "king-county")
+    county_school_year2 =CountySchoolYear.create(county_id: county.id, school_year_id: school_year2.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 15,
+                                cohort_dropout_rate: 85,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                                county_school_year_id: county_school_year2.id,
+                                dropout_id: dropout.id)
+
+    county_school_year = CountySchoolYear.create(county_id: county.id, school_year_id: school_year.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 90,
+                                cohort_dropout_rate: 10,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                                county_school_year_id: county_school_year.id,
+                                dropout_id: dropout.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 90,
+                                cohort_dropout_rate: 10,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'all').id,
+                                county_school_year_id: county_school_year.id,
+                                dropout_id: dropout.id)
+
+    county2 = County.create(name: "Pierce County", number: "17411", slug: "pierce-county")
+    county_school_year2 = CountySchoolYear.create(county_id: county2.id, school_year_id: school_year.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 80,
+                                cohort_dropout_rate: 20,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                                county_school_year_id: county_school_year2.id,
+                                dropout_id: dropout.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 80,
+                                cohort_dropout_rate: 20,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'all').id,
+                                county_school_year_id: county_school_year2.id,
+                                dropout_id: dropout.id)
+
+    county3 = County.create(name: "Kitsap County", number: "17402", slug: "kitsap-county")
+    county_school_year3 = CountySchoolYear.create(county_id: county3.id, school_year_id: school_year.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 70,
+                                cohort_dropout_rate: 30,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                                county_school_year_id: county_school_year3.id,
+                                dropout_id: dropout.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 70,
+                                cohort_dropout_rate: 30,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'all').id,
+                                county_school_year_id: county_school_year3.id,
+                                dropout_id: dropout.id)
+
+    county4 = County.create(name: "Adams County", number: "17403", slug: "adams-county")
+    county_school_year4 = CountySchoolYear.create(county_id: county4.id, school_year_id: school_year.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 60,
+                               cohort_dropout_rate: 40,
+                               student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                               county_school_year_id: county_school_year4.id,
+                               dropout_id: dropout.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 60,
+                               cohort_dropout_rate: 40,
+                               student_identifier_id: StudentIdentifier.find_by(name: 'all').id,
+                               county_school_year_id: county_school_year4.id,
+                               dropout_id: dropout.id)
+
+    county5 = County.create(name: "Asotin County", number: "21226", slug: "asotin-county")
+    county_school_year5 = CountySchoolYear.create(county_id: county5.id, school_year_id: school_year.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 50,
+                                cohort_dropout_rate: 50,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'female').id,
+                                county_school_year_id: county_school_year5.id,
+                                dropout_id: dropout.id)
+    FiveYearGraduationRate.create(adjusted_five_year_cohort_graduation_rate: 50,
+                                cohort_dropout_rate: 50,
+                                student_identifier_id: StudentIdentifier.find_by(name: 'all').id,
+                                county_school_year_id: county_school_year5.id,
+                                dropout_id: dropout.id)
+
+    [school_year, county, county2, county3, county4, county5]
+  end
+
   def create_tags_and_identifiers
     tags = ['race ethnicity', 'exceptional student services', 'other', 'gender', 'all']
 

@@ -15,6 +15,7 @@ This was started as an independent study project during module 4 at the Turing S
   * District: returns five-year graduation data in specified school district & specified school year, broken down by student demographic
   * County: returns five-year graduation data in specified county & specified school year, broken down by student demographic
   * District Highest: returns the n districts with the highest Adjusted 5-Year Cohort Graduation rate by specified student identifier(defaults to all)
+  * County Highest: returns the n counties with the highest Adjusted 5-Year Cohort Graduation rate by specified student identifier(defaults to all)
 
 #### Future Development
 
