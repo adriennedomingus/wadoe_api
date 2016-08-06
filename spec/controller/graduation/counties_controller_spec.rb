@@ -147,7 +147,7 @@ RSpec.describe Api::V1::Graduation::CountiesController, type: :controller do
     end
 
     it "defaults to top ten if number is not provided" do
-      school_year, _ = create_graduation_rates_for_multiple_districts
+      school_year, _ = create_graduation_rates_for_multiple_counties
       User.create(email: "example@example.com", password: "password", api_key: "abc123")
 
       get :highest, identifier: 'female', year: school_year.years, api_key: 'abc123', format: :json
